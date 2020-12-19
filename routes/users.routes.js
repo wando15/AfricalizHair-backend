@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const asynchandler = require("express-async-handler");
+const user_controller = require("../controllers/users.controllers");
 
-router.use('/')
-    .post(() => { })
+router.route('/')
+    .post(asynchandler(user_controller.create))
     .get(() => { });
 
-router.use('/{id}')
+router.route('/{id}')
     .get(() => { })
     .put(() => { });
 

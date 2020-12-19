@@ -10,9 +10,13 @@
   "author": "Wanderson Cesario de Souza",
   "license": "ISC",
   "dependencies": {
+    " mongoose": "^5.11.8",
     "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
     "jsonwebtoken": "^8.5.1",
-    "sequelize": "^6.3.5"
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.3.5",
+    "sqlite3": "^5.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"
