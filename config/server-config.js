@@ -2,11 +2,12 @@ module.exports = {
     PORT: 8080,
     DBCONECT: {
         DEV: {
-            database: '',
-            username: '',
-            password: '',
-            host: 'localhost:3306',
-            dialect: 'mysql'
+            database: 'africalizdb',
+            username: 'root',
+            password: '123456',
+            host: 'localhost',
+            port:'3306',
+            dialect: 'mysql'       
         }
     }
 }

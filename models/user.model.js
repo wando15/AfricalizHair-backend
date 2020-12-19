@@ -2,6 +2,11 @@ const { DataTypes } = require('sequelize');
 const db = require('../config/db-connect');
 
 const User = db.define('User', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrementIdentity: true
+    },
     name: {
         type: DataTypes.STRING,
         allowNull: false
@@ -16,6 +21,8 @@ const User = db.define('User', {
     pass_hash: {
         type: DataTypes.STRING
     }
-}, {});
+}, {
+    freezeTableName: true
+});
 
 module.exports = User;

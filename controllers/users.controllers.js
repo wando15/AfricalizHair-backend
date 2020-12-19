@@ -8,7 +8,7 @@ const messagesa = {
 async function create(req, res){
     const user_request = req.body;
 
-    var new_user = await User.init(user_request);
+    var new_user = await User.create(user_request);
 
     if (new_user.Id == null){
         res.JSON({
