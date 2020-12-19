@@ -7,13 +7,13 @@ app.get('/status', (req, res) => {
     res.send('Servidor Online! :)');
 });
 
-app.use('', (req, res, next) => {
-    console.log(JSON.stringify(req.body))
+app.use((req, res, next) => {
+    req.locals = [];
     next();
 });
 
 app.use('/', routes);
 
 app.listen(PORT, () => {
-    console.log(`port: ${PORT}`);
+    console.log(`run port: ${PORT}`);
 });
