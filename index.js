@@ -1,18 +1,36 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const routes = require('./routes/index.routes');
-const { PORT } = require('./config/server-config');
+const routes = require("./routes/index.routes");
+const { PORT } = require("./config/server-config");
+const bodyParser = require("body-parser");
+const { request } = require("express");
+const { isEmptyObject } = require("./helpers/ObjectTools");
 
-app.get('/status', (req, res) => {
-    res.send('Servidor Online! :)');
-});
+app.use(bodyParser.json());
 
 app.use((req, res, next) => {
-    req.locals = [];
+    console.log('=====================METHOD======================');
+    console.log(req.protocol + ' | ' + req.method + ' | ' + req.url);
+    // console.log('=====================HEADERS=====================');
+    // console.log(req.headers);
+
+    if (!isEmptyObject(req.body)) {
+        console.log('=====================BODY========================');
+        console.log(req.body);
+    }
+
+    console.log('=================================================');
+    console.log(new Date() + '');
+    console.log('=================================================');
+    // }
     next();
 });
 
-app.use('/', routes);
+app.get("/status", (req, res) => {
+    res.send("Servidor Online! :)");
+});
+
+app.use("/", routes);
 
 app.listen(PORT, () => {
     console.log(`run port: ${PORT}`);

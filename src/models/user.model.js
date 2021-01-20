@@ -1,12 +1,7 @@
-const { DataTypes } = require('sequelize');
-const db = require('../config/db-connect');
+const { DataTypes } = require("sequelize");
+const db = require("../../database/db-connect");
 
-const User = db.define('User', {
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrementIdentity: true
-    },
+const User = db.define("user", {
     name: {
         type: DataTypes.STRING,
         allowNull: false
@@ -24,5 +19,7 @@ const User = db.define('User', {
 }, {
     freezeTableName: true
 });
+
+User.sync();
 
 module.exports = User;

@@ -1,7 +1,7 @@
-const { DataTypes } = require('sequelize');
-const db = require('../config/db-connect');
+const { DataTypes } = require("sequelize");
+const db = require("../config/db-connect");
 
-const Auth_user = db.define('Auth_user', {
+const Auth_user = db.define("Auth_user", {
     user_id: {
         type: DataTypes.STRING,
         allowNull: false
