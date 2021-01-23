@@ -7,6 +7,7 @@ const messages = {
     last_name: "fail with Last name."
 }
 
+
 const body = {
     user: {
         name: Joi.string().required().error(() => messages.name),
@@ -33,7 +34,7 @@ async function existence(req, res, next) {
         next();
     }
     catch (exception) {
-        return next(new APIError("user already exist", 422, true, exception));
+        return next(new APIError("Failed to create user", 500, true, exception));
     }
 
 }

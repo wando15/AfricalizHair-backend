@@ -15,7 +15,10 @@ router.route("/")
 
 router.route("/:id")
     .get(asynchandler(user_controller.getById))
-    .put(() => { })
+    .put(
+        validate(user_validator.update),
+        asynchandler(user_controller.update)
+    )
     .delete(asynchandler(user_controller.remove));
 
 module.exports = router;

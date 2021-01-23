@@ -1,32 +1,32 @@
-const user_repository = require("../repositories/user.repository");
+const customer_repository = require("../repositories/customer.repository");
 const APIError = require("../../helpers/APIError");
 
 const messages = {
-    success_create: "User created successfully",
-    error_create: "Failed to create user",
-    ok_found: "User located successfully",
-    ok_found_list: "User list successfully retrieved",
-    not_found: "Not found user",
-    error_found: "Failed to recover user",
-    success_remove:"User removed successfully",
-    error_remove: "Failed to remove user",
-    success_updated: "User updated successfully",
-    error_updated: "Failed to update user",
+    success_create: "Customer created successfully",
+    error_create: "Failed to create customer",
+    ok_found: "Customer located successfully",
+    ok_found_list: "Customer list successfully retrieved",
+    not_found: "Not found customer",
+    error_found: "Failed to recover customer",
+    success_remove:"Customer removed successfully",
+    error_remove: "Failed to remove customer",    
+    success_updated: "Customer updated successfully",
+    error_updated: "Failed to update customer",
 }
 
 async function create(req, res, next) {
     try {
-        const user_request = req.body;
+        const customer_request = req.body;
 
-        const new_user = await user_repository.create(user_request);
+        const new_customer = await customer_repository.create(customer_request);
         
-        if(!new_user){
+        if(!new_customer){
             return next(new APIError(messages.error_create, 422, true));
         }
 
         res.status(200).json({
             message:messages.success_create,
-            user: new_user
+            customer: new_customer
         })
     }
     catch (exception) {
@@ -36,15 +36,15 @@ async function create(req, res, next) {
 
 async function list(req, res, next) {
     try {
-        const list_users = await user_repository.list(req.query);
+        const list_customers = await customer_repository.list(req.query);
         
-        if(!list_users || list_users.length < 1 ){
+        if(!list_customers || list_customers.length < 1 ){
             return next(new APIError(messages.not_found, 404, true));
         }
 
         res.status(200).json({
             message: messages.ok_found_list,
-            list_users
+            list_customers
         });
     }
     catch (exception) {
@@ -54,15 +54,15 @@ async function list(req, res, next) {
 
 async function getById(req, res, next) {
     try {
-        const user = await user_repository.getById(req.params.id);
+        const customer = await customer_repository.getById(req.params.id);
 
-        if(!user){
+        if(!customer){
             return next(new APIError(messages.not_found, 404, true));
         }
 
         res.status(200).json({
             message:messages.ok_found,
-            user
+            customer
         });
     }
     catch (exception) {
@@ -72,19 +72,19 @@ async function getById(req, res, next) {
 
 async function update(req, res, next) {
     try {
-        const user_request = req.body;
+        const customer_request = req.body;
 
-        const user = await user_repository.getById(req.params.id);
+        const customer = await customer_repository.getById(req.params.id);
 
-        if(!user){
+        if(!customer){
             return next(new APIError(messages.not_found, 404, true));
         }
 
-        const updated_user = await user_repository.update(user, user_request);
+        const updated_customer = await customer_repository.update(customer, customer_request);
 
         res.status(200).json({
             message: messages.success_updated,
-            user: updated_user
+            user: updated_customer
         });
     }
     catch (exception) {
@@ -92,16 +92,15 @@ async function update(req, res, next) {
     }
 }
 
-
 async function remove(req, res, next) {
     try {
-        const user = await user_repository.getById(req.params.id);
+        const customer = await customer_repository.getById(req.params.id);
 
-        if(!user){
+        if(!customer){
             return next(new APIError(messages.not_found, 404, true));
         }
 
-        await user_repository.remove(user);
+        await customer_repository.remove(customer);
 
         res.status(200).json({
             message: messages.success_remove,
@@ -116,6 +115,6 @@ module.exports = {
     create,
     list,
     getById,
-    remove,
+    remove, 
     update
 }

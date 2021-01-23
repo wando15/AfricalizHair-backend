@@ -18,6 +18,11 @@ async function getById(id) {
     return user || undefined;
 }
 
+async function update(user, user_request) {
+    user.update(user_request);
+    return user;
+}
+
 async function remove(user) {
     user.destroy();
     return;
@@ -27,6 +32,7 @@ module.exports = {
     create,
     list,
     getById,
-    remove
+    remove,
+    update
 }
 
