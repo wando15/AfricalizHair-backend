@@ -1,5 +1,6 @@
 const user_repository = require("../repositories/user.repository");
 const APIError = require("../../helpers/APIError");
+const bcrypt = require("bcrypt");
 
 const messages = {
     success_create: "User created successfully",
@@ -8,24 +9,35 @@ const messages = {
     ok_found_list: "User list successfully retrieved",
     not_found: "Not found user",
     error_found: "Failed to recover user",
-    success_remove:"User removed successfully",
+    success_remove: "User removed successfully",
     error_remove: "Failed to remove user",
     success_updated: "User updated successfully",
     error_updated: "Failed to update user",
 }
 
+async function load(req, res, next) {
+    const user = await user_repository.getById(req.session.user.id);
+
+    res.status(200).json({
+        message: messages.ok_found,
+        user
+    });
+}
+
 async function create(req, res, next) {
     try {
         const user_request = req.body;
+        user_request.email = user_request.email.toLowerCase();
+        user_request.pass = bcrypt.hashSync(user_request.pass, 5);
 
         const new_user = await user_repository.create(user_request);
-        
-        if(!new_user){
+
+        if (!new_user) {
             return next(new APIError(messages.error_create, 422, true));
         }
 
         res.status(200).json({
-            message:messages.success_create,
+            message: messages.success_create,
             user: new_user
         })
     }
@@ -37,8 +49,8 @@ async function create(req, res, next) {
 async function list(req, res, next) {
     try {
         const list_users = await user_repository.list(req.query);
-        
-        if(!list_users || list_users.length < 1 ){
+
+        if (!list_users || list_users.length < 1) {
             return next(new APIError(messages.not_found, 404, true));
         }
 
@@ -56,12 +68,12 @@ async function getById(req, res, next) {
     try {
         const user = await user_repository.getById(req.params.id);
 
-        if(!user){
+        if (!user) {
             return next(new APIError(messages.not_found, 404, true));
         }
 
         res.status(200).json({
-            message:messages.ok_found,
+            message: messages.ok_found,
             user
         });
     }
@@ -76,7 +88,7 @@ async function update(req, res, next) {
 
         const user = await user_repository.getById(req.params.id);
 
-        if(!user){
+        if (!user) {
             return next(new APIError(messages.not_found, 404, true));
         }
 
@@ -97,7 +109,7 @@ async function remove(req, res, next) {
     try {
         const user = await user_repository.getById(req.params.id);
 
-        if(!user){
+        if (!user) {
             return next(new APIError(messages.not_found, 404, true));
         }
 
@@ -113,6 +125,7 @@ async function remove(req, res, next) {
 }
 
 module.exports = {
+    load,
     create,
     list,
     getById,

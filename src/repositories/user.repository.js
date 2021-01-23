@@ -18,6 +18,12 @@ async function getById(id) {
     return user || undefined;
 }
 
+async function getByEmail(email) {
+    const user = await User.findOne({ where: { email } });
+
+    return user || undefined;
+}
+
 async function update(user, user_request) {
     user.update(user_request);
     return user;
@@ -32,6 +38,7 @@ module.exports = {
     create,
     list,
     getById,
+    getByEmail,
     remove,
     update
 }

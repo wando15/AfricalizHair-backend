@@ -5,6 +5,9 @@ const validate = require("express-validation");
 const user_controller = require("../src/controllers/user.controller");
 const user_validator = require("../src/middlewares/user.validator");
 
+router.route("/load")
+    .post(asynchandler(user_controller.load));
+
 router.route("/")
     .post(
         validate(user_validator.create),

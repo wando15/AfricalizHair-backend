@@ -13,8 +13,8 @@ const body = {
     customer: {
         name: Joi.string().required().error(() => messages.name),
         last_name: Joi.string().required().error(() => messages.last_name),
-        phone: Joi.string().required().error(() => messages.last_name),
-        email: Joi.string().email().required().error(() => messages.last_name)
+        phone: Joi.string().required().error(() => messages.phone),
+        email: Joi.string().email().required().error(() => messages.email)
     }
 }
 const create = {

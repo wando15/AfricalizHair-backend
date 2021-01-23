@@ -1,26 +1,31 @@
 const { DataTypes } = require("sequelize");
-const db = require("../config/db-connect");
+const db = require("../../database/db-connect");
 
-const Auth_user = db.define("Auth_user", {
+const Auth = db.define("auth", {
     user_id: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    token: {
-        type: DataTypes.STRING
-    },
-    pass: {
+    full_name: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    pass_hash: {
+    email: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    expiration_token: {
+    time_in: {
+        type: DataTypes.DATE
+    },
+    time_out: {
+        type: DataTypes.DATE
+    },
+    expires: {
         type: DataTypes.DATE,
         allowNull: false
-    },
+    }
 }, {});
 
-module.exports = Auth_user;
+Auth.sync({ alter: true });
+
+module.exports = Auth;

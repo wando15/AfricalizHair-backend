@@ -7,8 +7,8 @@ connection.authenticate()
   .then(() => {
     console.log(`Connection ${config.database} has been established successfully.`);
   })
-  .catch((err) => {
-    console.log(`Unable to connect to the database ${config.database}:`, err.parent);
+  .catch((exception) => {
+    console.log(`Unable to connect to the database ${config.database}:`, exception.parent);
   });
 
 module.exports = connection;

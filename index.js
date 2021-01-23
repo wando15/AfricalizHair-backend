@@ -1,12 +1,16 @@
 const express = require("express");
 const app = express();
+const session = require('express-session');
 const routes = require("./routes/index.routes");
-const { PORT } = require("./config/server-config");
+const { PORT, SESSION } = require("./config/server-config");
 const bodyParser = require("body-parser");
-const { request } = require("express");
 const { isEmptyObject } = require("./helpers/ObjectTools");
 
 app.use(bodyParser.json());
+
+app.use(
+    session(SESSION)
+);
 
 app.use((req, res, next) => {
     console.log('=====================METHOD======================');
