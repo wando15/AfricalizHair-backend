@@ -1,37 +1,83 @@
+const APIError = require("../../helpers/APIError");
 const User = require("../models/user.model");
 
-async function create(user_request) {
-    const new_user = await User.create(user_request);
+const messages = {
+    error_create: "Failed to create user"
+}
 
-    return new_user || undefined;
+async function create(user_request) {
+    try {
+        const new_user = await User.create(user_request);
+
+        return new_user || undefined;
+    }
+    catch (exception) {
+        throw exception;
+    }
 }
 
 async function list(query) {
-    const list_user = await User.findAll({ where: query });
+    try {
+        const list_user = await User.findAll({ where: query });
 
-    return list_user.length > 0 ? list_user : undefined;
+        return list_user.length > 0 ? list_user : undefined;
+    }
+    catch (exception) {
+        throw exception;
+    }
 }
 
 async function getById(id) {
-    const user = await User.findOne({ where: { id } });
+    try {
+        const user = await User.findOne({ where: { id } });
 
-    return user || undefined;
+        return user || undefined;
+    }
+    catch (exception) {
+        throw exception;
+    }
 }
 
 async function getByEmail(email) {
-    const user = await User.findOne({ where: { email } });
+    try {
+        const user = await User.findOne({ where: { email } });
 
-    return user || undefined;
+        return user || undefined;
+    }
+    catch (exception) {
+        throw exception;
+    }
+}
+
+async function getByRessetKey(pass_resset_key) {
+    try {
+        const user = await User.findOne({ where: { pass_resset_key } });
+
+        return user || undefined;
+    }
+    catch (exception) {
+        throw exception;
+    }
 }
 
 async function update(user, user_request) {
-    user.update(user_request);
-    return user;
+    try {
+        user.update(user_request);
+        return user;
+    }
+    catch (exception) {
+        throw exception;
+    }
 }
 
 async function remove(user) {
-    user.destroy();
-    return;
+    try {
+        user.destroy();
+        return;
+    }
+    catch (exception) {
+        throw exception;
+    }
 }
 
 module.exports = {
@@ -40,6 +86,7 @@ module.exports = {
     getById,
     getByEmail,
     remove,
-    update
+    update,
+    getByRessetKey
 }
 

@@ -14,6 +14,10 @@ router.route("/")
         asynchandler(user_validator.existence),
         asynchandler(user_controller.create)
     )
+    .put(
+        validate(user_validator.update),
+        asynchandler(user_controller.update)
+    )
     .get(asynchandler(user_controller.list));
 
 router.route("/:id")

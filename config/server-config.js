@@ -12,8 +12,8 @@ module.exports = {
         service: "gmail",
         port: 465,
         auth: {
-            user: '', // your gmail address
-            pass: '' // your gmail password
+            user: 'wando.euu@gmail.com', // your gmail address
+            pass: 'Sesario15' // your gmail password
         }
     }
 }

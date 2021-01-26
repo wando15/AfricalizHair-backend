@@ -90,7 +90,8 @@ async function forgot(req, res, next) {
 
     const forgot_user = user;
 
-    forgot_user.pass_reset_key = shortid.generate();
+    forgot_user.pass_resset_key = shortid.generate();
+    console.log(forgot_user.pass_resset_key);
     forgot_user.pass_key_expires = new Date().getTime() + 20 * 60 * 1000
 
     user = await user_repository.update(user, forgot_user);
@@ -108,40 +109,36 @@ async function forgot(req, res, next) {
 
 async function reset(req, res, next) {
     try {
-        const { email, pass_reset_key } = req.params;
+        const { key } = req.query;
+        const { new_pass } = req.body;
 
-        let user = await user_repository.getByEmail(email);
+        let user = await user_repository.getByRessetKey(key);
 
-        if (!user.pass_reset_key === pass_reset_key) {
-            return next(new APIError(messages.not_found, 404, true));
-        }
-
-        if (user) {
-            return next(new APIError(messages.not_found, 404, true));
+        if (!user) {
+            return next(new APIError(messages.error_key, 404, true));
         }
 
         const now = new Date().getTime();
         const key_expiration = user.pass_key_expires;
 
-        if (key_expiration > now) {
-            user.pass = bcrypt.hashSync(new_pass, config.bcrypt.NUMBER_CRIPTY);
-
-            user.pass_reset_key = undefined;
-            user.key_expiration = undefined;
-
-            user = await user_repository.update(user, user);
-
-            if (!user) {
-                res.status(200).json({
-                    message: messages.success_reset
-                });
-            } else {
-                return next(new APIError(messages.error_reset, 500, true));
-            }
-        }
-        else {
+        if (key_expiration < now) {
             return next(new APIError(messages.error_key_expiration, 500, true));
         }
+        const updated_user = user;
+        updated_user.pass = bcrypt.hashSync(new_pass, config.bcrypt.NUMBER_CRIPTY);
+
+        updated_user.pass_resset_key = undefined;
+        updated_user.pass_key_expires = undefined;
+
+        user = await user_repository.update(user, updated_user);
+
+        if (!user) {
+            return next(new APIError(messages.error_reset, 500, true));
+        }
+
+        res.status(200).json({
+            message: messages.success_reset
+        });
     }
     catch (exception) {
         return next(new APIError(messages.error_reset, 500, true, exception));

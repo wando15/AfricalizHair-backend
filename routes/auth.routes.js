@@ -9,17 +9,17 @@ router_login.route("/login")
         asynchandler(auth_controller.login)
     );
 
+router_login.route("/forgot/:email")
+    .post(
+        asynchandler(auth_controller.forgot)
+    );
+
 router.route("/logout")
     .post(
         asynchandler(auth_controller.logout)
     );
 
-router.route("/forgot/:email")
-    .post(
-        asynchandler(auth_controller.forgot)
-    );
-
-router.route("/resset")
+router_login.route("/resset")
     .post(
         asynchandler(auth_controller.reset)
     );

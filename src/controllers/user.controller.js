@@ -1,6 +1,7 @@
 const user_repository = require("../repositories/user.repository");
 const APIError = require("../../helpers/APIError");
 const bcrypt = require("bcrypt");
+const config = require("../../config/server-config");
 
 const messages = {
     success_create: "User created successfully",
@@ -16,7 +17,7 @@ const messages = {
 }
 
 async function load(req, res, next) {
-    const user = await user_repository.getById(req.session.user.id);
+    const user = await user_repository.getById(req.session.user.user_id);
 
     res.status(200).json({
         message: messages.ok_found,
@@ -28,7 +29,7 @@ async function create(req, res, next) {
     try {
         const user_request = req.body;
         user_request.email = user_request.email.toLowerCase();
-        user_request.pass = bcrypt.hashSync(user_request.pass, 5);
+        user_request.pass = bcrypt.hashSync(user_request.pass, config.bcrypt.NUMBER_CRIPTY);
 
         const new_user = await user_repository.create(user_request);
 
@@ -86,10 +87,14 @@ async function update(req, res, next) {
     try {
         const user_request = req.body;
 
-        const user = await user_repository.getById(req.params.id);
+        const user = await user_repository.getById(req.params.id || req.session.user.user_id);
 
         if (!user) {
             return next(new APIError(messages.not_found, 404, true));
+        }
+
+        if(user_request.pass){
+            user_request.pass = bcrypt.hashSync(user_request.pass, config.bcrypt.NUMBER_CRIPTY);
         }
 
         const updated_user = await user_repository.update(user, user_request);

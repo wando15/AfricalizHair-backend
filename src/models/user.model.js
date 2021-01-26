@@ -17,7 +17,7 @@ const User = db.define("user", {
         type: DataTypes.STRING,
         allowNull: false
     },
-    pass_reset_key: {
+    pass_resset_key: {
         type: DataTypes.STRING
     },
     pass_key_expires:{
