@@ -21,7 +21,7 @@ const User = db.define("user", {
         type: DataTypes.STRING
     },
     pass_key_expires:{
-        type: DataTypes.INTEGER
+        type: DataTypes.BIGINT
     }
 }, {
     freezeTableName: true
@@ -33,7 +33,7 @@ User.prototype.toJSON =  function () {
     var values = Object.assign({}, this.get());
   
     delete values.pass;
-    delete values.pass_reset_key;
+    delete values.pass_resset_key;
     delete values.pass_key_expires;
     return values;
   }

@@ -88,13 +88,11 @@ async function forgot(req, res, next) {
         return next(new APIError(messages.not_found, 404, true));
     }
 
-    const forgot_user = user;
+    const user_request = {};
+    user_request.pass_resset_key = shortid.generate();
+    user_request.pass_key_expires = new Date().getTime() + 20 * 60 * 1000
 
-    forgot_user.pass_resset_key = shortid.generate();
-    console.log(forgot_user.pass_resset_key);
-    forgot_user.pass_key_expires = new Date().getTime() + 20 * 60 * 1000
-
-    user = await user_repository.update(user, forgot_user);
+    user = await user_repository.update(user, user_request);
 
     if (!user) {
         return next(new APIError(messages.error_forgot, 404, true));
@@ -124,11 +122,12 @@ async function reset(req, res, next) {
         if (key_expiration < now) {
             return next(new APIError(messages.error_key_expiration, 500, true));
         }
-        const updated_user = user;
+
+        const updated_user = {};
         updated_user.pass = bcrypt.hashSync(new_pass, config.bcrypt.NUMBER_CRIPTY);
 
-        updated_user.pass_resset_key = undefined;
-        updated_user.pass_key_expires = undefined;
+        updated_user.pass_resset_key = null;
+        updated_user.pass_key_expires = null;
 
         user = await user_repository.update(user, updated_user);
 

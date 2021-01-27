@@ -63,7 +63,7 @@ async function getByRessetKey(pass_resset_key) {
 async function update(user, user_request) {
     try {
         user.update(user_request);
-        return user;
+        return user || undefined;
     }
     catch (exception) {
         throw exception;
