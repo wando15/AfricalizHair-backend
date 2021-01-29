@@ -21,7 +21,8 @@ async function load(req, res, next) {
 
     res.status(200).json({
         message: messages.ok_found,
-        user
+        user,
+        permission: user.modules
     });
 }
 

@@ -1,31 +1,56 @@
 const Customer = require("../models/customer.model");
 
 async function create(customer_request) {
-    const new_customer = await Customer.create(customer_request);
+    try {
+        const new_customer = await Customer.create(customer_request);
 
-    return new_customer || undefined;
+        return new_customer || undefined;
+    }
+    catch (exception) {
+        throw exception;
+    }
 }
 
 async function list(query) {
-    const list_customer = await Customer.findAll({ where: query });
+    try {
+        const list_customer = await Customer.findAll({ where: query });
 
-    return list_customer.length > 0 ? list_customer : undefined;
+        return list_customer.length > 0 ? list_customer : undefined;
+    }
+    catch (exception) {
+        throw exception;
+    }
 }
 
 async function getById(id) {
-    const customer = await Customer.findOne({ where: { id } });
+    try {
+        const customer = await Customer.findOne({ where: { id } });
 
-    return customer || undefined;
+        return customer || undefined;
+    }
+    catch (exception) {
+        throw exception;
+    }
 }
 
 async function update(customer, customer_request) {
-    customer.update(customer_request);
-    return customer;
+    try {
+        await customer.update(customer_request);
+        return customer;
+    }
+    catch (exception) {
+        throw exception;
+    }
 }
 
 async function remove(customer) {
-    customer.destroy();
-    return;
+    try {
+        await customer.destroy();
+        return;
+    }
+    catch (exception) {
+        throw exception;
+    }
 }
 
 module.exports = {

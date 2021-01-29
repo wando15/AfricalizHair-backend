@@ -24,7 +24,9 @@ const Auth = db.define("auth", {
         type: DataTypes.DATE,
         allowNull: false
     }
-}, {});
+}, {
+    freezeTableName: true
+});
 
 Auth.sync({ alter: true });
 

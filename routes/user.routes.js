@@ -11,7 +11,7 @@ router.route("/load")
 router.route("/")
     .post(
         validate(user_validator.create),
-        asynchandler(user_validator.existence),
+        asynchandler(user_validator.recurrent),
         asynchandler(user_controller.create)
     )
     .put(
@@ -24,6 +24,7 @@ router.route("/:id")
     .get(asynchandler(user_controller.getById))
     .put(
         validate(user_validator.update),
+        asynchandler(user_validator.recurrent),
         asynchandler(user_controller.update)
     )
     .delete(asynchandler(user_controller.remove));

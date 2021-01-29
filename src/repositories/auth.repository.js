@@ -1,26 +1,46 @@
 const Auth = require("../models/auth.model");
 
 async function create(auth_request) {
-    const new_auth = await Auth.create(auth_request);
+    try {
+        const new_auth = await Auth.create(auth_request);
 
-    return new_auth || undefined;
+        return new_auth || undefined;
+    }
+    catch (exception) {
+        throw exception;
+    }
 }
 
 async function list(query) {
-    const list_auth = await Auth.findAll({ where: query });
+    try {
+        const list_auth = await Auth.findAll({ where: query });
 
-    return list_auth.length > 0 ? list_auth : undefined;
+        return list_auth.length > 0 ? list_auth : undefined;
+    }
+    catch (exception) {
+        throw exception;
+    }
 }
 
 async function update(auth, auth_request) {
-    auth.update(auth_request);
-    return auth;
+    try {
+        await auth.update(auth_request);
+        return auth || undefined;
+    }
+    catch (exception) {
+        throw exception;
+    }
 }
 
 async function getById(id) {
-    const auth = await Auth.findOne({ where: { id } });
+    try {
+        const auth = await Auth.findOne({ where: { id } });
 
-    return auth || undefined;
+        return auth || undefined;
+    }
+    catch (exception) {
+        throw exception;
+    }
 }
 
 module.exports = {

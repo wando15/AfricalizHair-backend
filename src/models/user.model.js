@@ -9,6 +9,10 @@ const User = db.define("user", {
     last_name: {
         type: DataTypes.STRING
     },
+    profile_id: {
+        type: DataTypes.INTEGER,
+        references: { model: "profile", key: "id" }
+    },
     email: {
         type: DataTypes.STRING,
         allowNull: false
@@ -20,7 +24,7 @@ const User = db.define("user", {
     pass_resset_key: {
         type: DataTypes.STRING
     },
-    pass_key_expires:{
+    pass_key_expires: {
         type: DataTypes.BIGINT
     }
 }, {
@@ -29,14 +33,14 @@ const User = db.define("user", {
 
 User.sync({ alter: true });
 
-User.prototype.toJSON =  function () {
+User.prototype.toJSON = function () {
     var values = Object.assign({}, this.get());
-  
+
     delete values.pass;
     delete values.pass_resset_key;
     delete values.pass_key_expires;
     return values;
-  }
+}
 
 
 module.exports = User;

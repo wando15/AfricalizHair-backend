@@ -1,5 +1,6 @@
-const APIError = require("../../helpers/APIError");
 const User = require("../models/user.model");
+const module_repository = require("./module.repository");
+const profile_module_repository = require("./profile_module.repository");
 
 const messages = {
     error_create: "Failed to create user"
@@ -29,7 +30,18 @@ async function list(query) {
 
 async function getById(id) {
     try {
-        const user = await User.findOne({ where: { id } });
+        let user = await User.findOne({ where: { id } });
+
+
+        if (user) {
+            user.modules = await profile_module_repository.list({ profile_id: user.profile_id });
+            const modules = [];
+            for (let module of user.modules) {
+                module = await module_repository.getById(module.module_id);
+                modules.push(module);
+            }
+            user.modules = modules;
+        }
 
         return user || undefined;
     }
@@ -62,7 +74,7 @@ async function getByRessetKey(pass_resset_key) {
 
 async function update(user, user_request) {
     try {
-        user.update(user_request);
+        await user.update(user_request);
         return user || undefined;
     }
     catch (exception) {
@@ -72,7 +84,7 @@ async function update(user, user_request) {
 
 async function remove(user) {
     try {
-        user.destroy();
+        await user.destroy();
         return;
     }
     catch (exception) {

@@ -8,7 +8,7 @@ const customer_validator = require("../src/middlewares/customer.validator");
 router.route("/")
     .post(
         validate(customer_validator.create),
-        asynchandler(customer_validator.existence),
+        asynchandler(customer_validator.recurrent),
         asynchandler(customer_controller.create)
     )
     .get(asynchandler(customer_controller.list));

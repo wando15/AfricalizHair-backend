@@ -41,7 +41,7 @@ async function login(req, res, next) {
 
     const session = {
         email: user.email,
-        full_name: user.name + " " + user.lest_name,
+        full_name: user.name + " " + user.last_name,
         user_id: user.id,
         expires: new Date(Date.now() + 24 * 3600 * 1000),
         time_in: new Date()
