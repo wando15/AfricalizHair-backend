@@ -5,8 +5,8 @@ const customer_repository = require("../repositories/customer.repository");
 const messages = {
     name: "fail with Name.",
     last_name: "fail with Last name.",
-    phone: "fail with Last phone.",
-    email: "fail with Last email.",
+    phone: "fail with phone.",
+    email: "fail with email.",
 }
 
 const body = {
