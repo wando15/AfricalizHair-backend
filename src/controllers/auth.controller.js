@@ -81,28 +81,39 @@ async function logout(req, res, next) {
 }
 
 async function forgot(req, res, next) {
-    const { email } = req.params;
-    let user = await user_repository.getByEmail(email);
+    try {
+        const { email } = req.params;
+        let user = await user_repository.getByEmail(email);
 
-    if (!user) {
-        return next(new APIError(messages.not_found, 404, true));
+        if (!user) {
+            return next(new APIError(messages.not_found, 404, true));
+        }
+
+        const user_request = {};
+        user_request.pass_resset_key = shortid.generate();
+        user_request.pass_key_expires = new Date().getTime() + 20 * 60 * 1000
+
+        user = await user_repository.update(user, user_request);
+
+        if (!user) {
+            return next(new APIError(messages.error_forgot, 404, true));
+        }
+
+        mailer.sendForgot({
+            to: user.email,
+            template_id: 'forgot_password',
+            params: {
+                name: user.email,
+                code: user.pass_resset_key
+            }
+        }, next);
+
+        res.status(200).json({
+            message: messages.success_forgot + " " + user.email
+        });
+    } catch (Exception) {
+        return next(new APIError(messages.error_reset, 500, true, exception));
     }
-
-    const user_request = {};
-    user_request.pass_resset_key = shortid.generate();
-    user_request.pass_key_expires = new Date().getTime() + 20 * 60 * 1000
-
-    user = await user_repository.update(user, user_request);
-
-    if (!user) {
-        return next(new APIError(messages.error_forgot, 404, true));
-    }
-
-    mailer.sendForgot(user, next);
-
-    res.status(200).json({
-        message: messages.success_forgot + " " + user.email
-    });
 }
 
 async function reset(req, res, next) {

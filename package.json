@@ -10,6 +10,8 @@
   "author": "Wanderson Cesario de Souza",
   "license": "ISC",
   "dependencies": {
+    "Buffer": "0.0.0",
+    "base64-url": "^2.3.3",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",

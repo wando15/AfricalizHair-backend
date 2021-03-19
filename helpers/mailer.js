@@ -1,20 +1,20 @@
 const nodemailer = require("nodemailer");
 const { MAILER } = require("../config/server-config");
 const APIError = require("./APIError");
+const Template = require('../src/controllers/template.controller');
 
 const transporter = nodemailer.createTransport(MAILER);
 
 
-function sendForgot(user, next) {
+async function sendForgot(mail_options, next) {
 
+    const template = await Template.getTemplate(mail_options);
+    
     const mailOptions = {
-        subject: `Password reset`,
-        to: user.email,
-        from: `NodeAuthTuts ${MAILER.auth.user}`,
-        html: `<h1>Hi,</h1>
-                  <h2>Here is your password reset key</h2>
-                  <h2><code contenteditable="false" style="font-weight:200;font-size:1.5rem;padding:5px 10px; background: #EEEEEE; border:0">${user.pass_resset_key}</code></h4>
-                  <p>Please ignore if you didn't try to reset your password on our platform</p>`
+        subject: template.subject,
+        to: mail_options.to,
+        from: MAILER.auth.user,
+        html: template.html
     }
 
     sender(mailOptions, next);
@@ -25,7 +25,7 @@ function sender(mailOptions, next) {
         transporter.sendMail(mailOptions, (error, response) => {
             if (error) {
                 console.log("error:\n", error, "\n");
-                return noExtendLeft(new APIError("could not send reset code", 422, true));
+                return next(new APIError("could not send reset code", 422, true));
             } else {
                 console.log("email sent:\n", response);
                 return next(new APIError("Reset Code sent", 422, true));

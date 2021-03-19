@@ -9,8 +9,10 @@ module.exports = {
         NUMBER_CRIPTY: 5
     },
     MAILER: {
-        service: "gmail",
-        port: 465,
+        service: "Gmail",
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false, // true for 465, false for other ports
         auth: {
             user: 'wando.euu@gmail.com', // your gmail address
             pass: 'Sesario15' // your gmail password
