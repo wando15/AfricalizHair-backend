@@ -1,4 +1,4 @@
 node_modules
 .vscode
-db-config
-server.config
+db-config.js
+server.config.js
