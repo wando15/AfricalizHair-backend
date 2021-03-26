@@ -20,6 +20,4 @@ const Customer = db.define("customer", {
     freezeTableName: true
 });
 
-Customer.sync({ alter: true });
-
 module.exports = Customer;

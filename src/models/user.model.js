@@ -9,10 +9,6 @@ const User = db.define("user", {
     last_name: {
         type: DataTypes.STRING
     },
-    profile_id: {
-        type: DataTypes.INTEGER,
-        references: { model: "profile", key: "id" }
-    },
     email: {
         type: DataTypes.STRING,
         allowNull: false
@@ -30,8 +26,6 @@ const User = db.define("user", {
 }, {
     freezeTableName: true
 });
-
-User.sync({ alter: true });
 
 User.prototype.toJSON = function () {
     var values = Object.assign({}, this.get());

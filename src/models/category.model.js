@@ -13,7 +13,4 @@ const Category = db.define("category", {
     freezeTableName: true
 });
 
-Category.sync({ alter: true });
-
-
 module.exports = Category;

@@ -1,5 +1,4 @@
 const Joi = require("joi");
-const APIError = require("../../helpers/APIError");
 const profile_module_repository = require("../repositories/profile_module.repository");
 
 
@@ -22,13 +21,13 @@ async function recurrent(req, res, next) {
         const already = await profile_module_repository.list( request );
 
         if (already) {
-            return next(new APIError("relation already exist", 422, true));
+            throw (new Error("relation already exist", 422, true));
         }
 
         next();
     }
     catch (exception) {
-        return next(new APIError("Failed to create relation", 500, true, exception));
+        throw (new Error("Failed to create relation", 500, true, exception));
     }
 }
 

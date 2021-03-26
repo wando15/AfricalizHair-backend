@@ -19,13 +19,10 @@ const Template = db.define("template", {
         allowNull: false
     },
     content: {
-        type: DataTypes.STRING
+        type: DataTypes.BLOB('long'),
     }
 }, {
     freezeTableName: true
 });
-
-Template.sync({ alter: true });
-
 
 module.exports = Template;

@@ -1,5 +1,4 @@
 const Joi = require("joi");
-const APIError = require("../../helpers/APIError");
 const product_repository = require("../repositories/product.repository");
 
 const messages = {
@@ -35,13 +34,13 @@ async function recurrent(req, res, next) {
         const already = await product_repository.list({ name: request.name});
 
         if (already && already.id != request.id) {
-            return next(new APIError("product already exist", 422, true));
+            throw (new Error("product already exist", 422, true));
         }
 
         next();
     }
     catch (exception) {
-        return next(new APIError("Failed to create product", 500, true, exception));
+        throw (new Error("Failed to create product", 500, true, exception));
     }
 }
 
@@ -51,13 +50,13 @@ async function existence(req, res, next) {
         const already = await product_repository.getById(request.product_id);
 
         if (!already) {
-            return next(new APIError("product not found", 422, true));
+            throw (new Error("product not found", 422, true));
         }
 
         next();
     }
     catch (exception) {
-        return next(new APIError("Failed to verify product", 500, true, exception));
+        throw (new Error("Failed to verify product", 500, true, exception));
     }
 }
 

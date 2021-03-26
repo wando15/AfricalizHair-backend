@@ -1,5 +1,4 @@
 const profile_module_repository = require("../repositories/profile_module.repository");
-const APIError = require("../../helpers/APIError");
 
 const messages = {
     success_create: "Relation created successfully",
@@ -16,7 +15,7 @@ async function add(req, res, next) {
         const new_profile_module = await profile_module_repository.create(profile_module_request);
         
         if(!new_profile_module){
-            return next(new APIError(messages.error_create, 422, true));
+            throw (new Error(messages.error_create, 422, true));
         }
 
         res.status(200).json({
@@ -24,7 +23,7 @@ async function add(req, res, next) {
         })
     }
     catch (exception) {
-        return next(new APIError(messages.error_create, 500, true, exception));
+        throw (new Error(messages.error_create, 500, true, exception));
     }
 }
 
@@ -33,7 +32,7 @@ async function remove(req, res, next) {
         const profile_module = await profile_module_repository.getById(req.body);
 
         if(!profile_module){
-            return next(new APIError(messages.not_found, 404, true));
+            throw (new Error(messages.not_found, 404, true));
         }
 
         await profile_module_repository.remove(profile_module);
@@ -43,7 +42,7 @@ async function remove(req, res, next) {
         });
     }
     catch (exception) {
-        return next(new APIError(messages.error_remove, 500, true, exception));
+        throw (new Error(messages.error_remove, 500, true, exception));
     }
 }
 

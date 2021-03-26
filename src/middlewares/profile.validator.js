@@ -1,5 +1,4 @@
 const Joi = require("joi");
-const APIError = require("../../helpers/APIError");
 const profile_repository = require("../repositories/profile.repository");
 
 const messages = {
@@ -27,13 +26,13 @@ async function recurrent(req, res, next) {
         const already = await profile_repository.list({ name: request.name });
 
         if (already && already.id != request.id) {
-            return next(new APIError("profile already exist", 422, true));
+            throw (new Error("profile already exist", 422, true));
         }
 
         next();
     }
     catch (exception) {
-        return next(new APIError("Failed to create profile", 500, true, exception));
+        throw (new Error("Failed to create profile", 500, true, exception));
     }
 }
 
@@ -43,13 +42,13 @@ async function existence(req, res, next) {
         const already = await profile_repository.getById(request.profile_id);
 
         if (!already) {
-            return next(new APIError("profile not found", 422, true));
+            throw (new Error("profile not found", 422, true));
         }
 
         next();
     }
     catch (exception) {
-        return next(new APIError("Failed to verify profile", 500, true, exception));
+        throw (new Error("Failed to verify profile", 500, true, exception));
     }
 }
 

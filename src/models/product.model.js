@@ -15,20 +15,9 @@ const Product = db.define("product", {
     price: {
         type: DataTypes.DECIMAL(18,2),
         allowNull: false
-    },
-    brand_id: {
-        type: DataTypes.INTEGER,
-        references: { model: "brand", key: "id" }
-    },
-    category_id: {
-        type: DataTypes.INTEGER,
-        references: { model: "category", key: "id" }
     }
 }, {
     freezeTableName: true
 });
-
-Product.sync({ alter: true });
-
 
 module.exports = Product;

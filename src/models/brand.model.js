@@ -19,7 +19,4 @@ const Brand = db.define("brand", {
     freezeTableName: true
 });
 
-Brand.sync({ alter: true });
-
-
 module.exports = Brand;

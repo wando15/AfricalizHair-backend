@@ -1,5 +1,4 @@
 const Joi = require("joi");
-const APIError = require("../../helpers/APIError");
 const user_repository = require("../repositories/user.repository");
 
 const messages = {
@@ -28,16 +27,17 @@ const update = {
 async function recurrent(req, res, next) {
     try {
         const request = req.body;
+        req.body.name = req.body.name.substring(0,1).toUpperCase().concat(req.body.name.substring(1));
         const already = await user_repository.list({ name: request.name, last_name: request.last_name });
 
         if (already && already.id != request.id) {
-            return next(new APIError("user already exist", 422, true));
+            throw (new Error("user already exist", 422, true));
         }
 
         next();
     }
     catch (exception) {
-        return next(new APIError("Failed to create user", 500, true, exception));
+        throw (new Error("Failed to create user", 500, true, exception));
     }
 }
 
@@ -47,13 +47,13 @@ async function existence(req, res, next) {
         const already = await user_repository.getById(request.user_id);
 
         if (!already) {
-            return next(new APIError("user not found", 422, true));
+            throw (new Error("user not found", 422, true));
         }
 
         next();
     }
     catch (exception) {
-        return next(new APIError("Failed to verify user", 500, true, exception));
+        throw (new Error("Failed to verify user", 500, true, exception));
     }
 }
 

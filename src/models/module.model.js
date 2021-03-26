@@ -13,6 +13,4 @@ const Module = db.define("module", {
     freezeTableName: true
 });
 
-Module.sync({ alter: true });
-
 module.exports = Module;

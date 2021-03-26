@@ -2,10 +2,6 @@ const { DataTypes } = require("sequelize");
 const db = require("../../database/db-connect");
 
 const Auth = db.define("auth", {
-    user_id: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
     full_name: {
         type: DataTypes.STRING,
         allowNull: false
@@ -23,11 +19,10 @@ const Auth = db.define("auth", {
     expires: {
         type: DataTypes.DATE,
         allowNull: false
+    
     }
 }, {
     freezeTableName: true
 });
-
-Auth.sync({ alter: true });
 
 module.exports = Auth;

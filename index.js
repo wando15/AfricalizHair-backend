@@ -3,10 +3,10 @@ const app = express();
 const session = require('express-session');
 const routes = require("./routes/index.routes");
 const { PORT, SESSION } = require("./config/server-config");
-const bodyParser = require("body-parser");
 const { isEmptyObject } = require("./helpers/ObjectTools");
+const index_mode = require("./src/models/index.model");
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.use(
     session(SESSION)
@@ -26,7 +26,6 @@ app.use((req, res, next) => {
     console.log('=================================================');
     console.log(new Date() + '');
     console.log('=================================================');
-    // }
     next();
 });
 

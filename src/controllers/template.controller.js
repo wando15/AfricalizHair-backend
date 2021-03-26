@@ -1,5 +1,4 @@
 const template_repository = require("../repositories/template.repository");
-const APIError = require("../../helpers/APIError");
 
 const messages = {
     success_create: "Template created successfully",
@@ -19,7 +18,7 @@ async function create(req, res, next) {
         const new_template = await template_repository.create(template_request);
 
         if (!new_template) {
-            return next(new APIError(messages.error_create, 422, true));
+            throw (new Error(messages.error_create, 422, true));
         }
 
         res.status(200).json({
@@ -28,7 +27,7 @@ async function create(req, res, next) {
         })
     }
     catch (exception) {
-        return next(new APIError(messages.error_create, 500, true, exception));
+        throw (new Error(messages.error_create, 500, true, exception));
     }
 }
 
@@ -37,7 +36,7 @@ async function list(req, res, next) {
         const list_templates = await template_repository.list(req.query);
 
         if (!list_templates || list_templates.length < 1) {
-            return next(new APIError(messages.not_found, 404, true));
+            throw (new Error(messages.not_found, 404, true));
         }
 
         res.status(200).json({
@@ -46,7 +45,7 @@ async function list(req, res, next) {
         });
     }
     catch (exception) {
-        return next(new APIError(messages.error_found, 500, true, exception));
+        throw (new Error(messages.error_found, 500, true, exception));
     }
 }
 
@@ -55,7 +54,7 @@ async function getById(req, res, next) {
         const template = await template_repository.getById(req.params.id);
 
         if (!template) {
-            return next(new APIError(messages.not_found, 404, true));
+            throw (new Error(messages.not_found, 404, true));
         }
 
         res.status(200).json({
@@ -64,7 +63,7 @@ async function getById(req, res, next) {
         });
     }
     catch (exception) {
-        return next(new APIError(messages.error_found, 500, true, exception));
+        throw (new Error(messages.error_found, 500, true, exception));
     }
 }
 
@@ -73,7 +72,7 @@ async function remove(req, res, next) {
         const template = await template_repository.getById(req.params.id);
 
         if (!template) {
-            return next(new APIError(messages.not_found, 404, true));
+            throw (new Error(messages.not_found, 404, true));
         }
 
         await template_repository.remove(template);
@@ -83,7 +82,7 @@ async function remove(req, res, next) {
         });
     }
     catch (exception) {
-        return next(new APIError(messages.error_remove, 500, true, exception));
+        throw (new Error(messages.error_remove, 500, true, exception));
     }
 }
 

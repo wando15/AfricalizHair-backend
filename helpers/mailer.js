@@ -1,6 +1,5 @@
 const nodemailer = require("nodemailer");
 const { MAILER } = require("../config/server-config");
-const APIError = require("./APIError");
 const Template = require('../src/controllers/template.controller');
 
 const transporter = nodemailer.createTransport(MAILER);
@@ -25,15 +24,15 @@ function sender(mailOptions, next) {
         transporter.sendMail(mailOptions, (error, response) => {
             if (error) {
                 console.log("error:\n", error, "\n");
-                return next(new APIError("could not send reset code", 422, true));
+                throw (new Error("could not send reset code", 422, true));
             } else {
                 console.log("email sent:\n", response);
-                return next(new APIError("Reset Code sent", 422, true));
+                throw (new Error("Reset Code sent", 422, true));
             }
         });
     } catch (exception) {
         console.log(error);
-        return next(new APIError("could not sent reset code", 500, true, exception));
+        throw (new Error("could not sent reset code", 500, true, exception));
     }
 }
 

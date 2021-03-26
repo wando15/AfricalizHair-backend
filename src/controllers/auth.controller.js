@@ -1,5 +1,4 @@
 
-const APIError = require("../../helpers/APIError");
 const shortid = require("shortid");
 const bcrypt = require("bcrypt");
 const user_repository = require("../repositories/user.repository");
@@ -30,13 +29,13 @@ async function login(req, res, next) {
     const user = await user_repository.getByEmail(email);
 
     if (!user) {
-        return next(new APIError(messages.error_login, 422, true));
+        throw (new Error(messages.error_login, 422, true));
     }
 
     let passwordCheck = bcrypt.compareSync(pass, user.pass);
 
     if (!passwordCheck) {
-        return next(new APIError(messages.error_login, 422, true));
+        throw (new Error(messages.error_login, 422, true));
     }
 
     const session = {
@@ -48,6 +47,7 @@ async function login(req, res, next) {
     };
 
     req.session.user = await auth_repository.create(session);
+
 
     res.status(200).json({
         message: messages.success_login,
@@ -63,7 +63,7 @@ async function logout(req, res, next) {
         const auth = await auth_repository.getById(user.id);
 
         if (!auth) {
-            return next(new APIError(messages.error_logout, 500, true));
+            throw (new Error(messages.error_logout, 500, true));
         }
 
         await auth_repository.update(auth, user);
@@ -76,7 +76,7 @@ async function logout(req, res, next) {
         });
     }
     catch (exception) {
-        return next(new APIError(messages.error_logout, 500, true, exception));
+        throw (new Error(messages.error_logout, 500, true, exception));
     }
 }
 
@@ -86,7 +86,7 @@ async function forgot(req, res, next) {
         let user = await user_repository.getByEmail(email);
 
         if (!user) {
-            return next(new APIError(messages.not_found, 404, true));
+            throw (new Error(messages.not_found, 404, true));
         }
 
         const user_request = {};
@@ -96,14 +96,14 @@ async function forgot(req, res, next) {
         user = await user_repository.update(user, user_request);
 
         if (!user) {
-            return next(new APIError(messages.error_forgot, 404, true));
+            throw (new Error(messages.error_forgot, 404, true));
         }
 
         mailer.sendForgot({
             to: user.email,
             template_id: 'forgot_password',
             params: {
-                name: user.email,
+                name: user.name,
                 code: user.pass_resset_key
             }
         }, next);
@@ -112,7 +112,7 @@ async function forgot(req, res, next) {
             message: messages.success_forgot + " " + user.email
         });
     } catch (Exception) {
-        return next(new APIError(messages.error_reset, 500, true, exception));
+        throw (new Error(messages.error_reset, 500, true, exception));
     }
 }
 
@@ -124,14 +124,14 @@ async function reset(req, res, next) {
         let user = await user_repository.getByRessetKey(key);
 
         if (!user) {
-            return next(new APIError(messages.error_key, 404, true));
+            throw (new Error(messages.error_key, 404, true));
         }
 
         const now = new Date().getTime();
         const key_expiration = user.pass_key_expires;
 
         if (key_expiration < now) {
-            return next(new APIError(messages.error_key_expiration, 500, true));
+            throw (new Error(messages.error_key_expiration, 500, true));
         }
 
         const updated_user = {};
@@ -143,7 +143,7 @@ async function reset(req, res, next) {
         user = await user_repository.update(user, updated_user);
 
         if (!user) {
-            return next(new APIError(messages.error_reset, 500, true));
+            throw (new Error(messages.error_reset, 500, true));
         }
 
         res.status(200).json({
@@ -151,7 +151,7 @@ async function reset(req, res, next) {
         });
     }
     catch (exception) {
-        return next(new APIError(messages.error_reset, 500, true, exception));
+        throw (new Error(messages.error_reset, 500, true, exception));
     }
 }
 
@@ -160,7 +160,7 @@ async function list(req, res, next) {
         const list_auths = await auth_repository.list(req.query);
 
         if (!list_auths || list_auths.length < 1) {
-            return next(new APIError(messages.not_found, 404, true));
+            throw (new Error(messages.not_found, 404, true));
         }
 
         res.status(200).json({
@@ -169,7 +169,7 @@ async function list(req, res, next) {
         });
     }
     catch (exception) {
-        return next(new APIError(messages.error_found, 500, true, exception));
+        throw (new Error(messages.error_found, 500, true, exception));
     }
 }
 
@@ -178,7 +178,7 @@ async function getById(req, res, next) {
         const auth = await auth_repository.getById(req.params.id);
 
         if (!auth) {
-            return next(new APIError(messages.not_found, 404, true));
+            throw (new Error(messages.not_found, 404, true));
         }
 
         res.status(200).json({
@@ -187,7 +187,7 @@ async function getById(req, res, next) {
         });
     }
     catch (exception) {
-        return next(new APIError(messages.error_found, 500, true, exception));
+        throw (new Error(messages.error_found, 500, true, exception));
     }
 }
 

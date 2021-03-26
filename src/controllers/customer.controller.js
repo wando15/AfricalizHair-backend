@@ -1,5 +1,4 @@
 const customer_repository = require("../repositories/customer.repository");
-const APIError = require("../../helpers/APIError");
 
 const messages = {
     success_create: "Customer created successfully",
@@ -21,7 +20,7 @@ async function create(req, res, next) {
         const new_customer = await customer_repository.create(customer_request);
         
         if(!new_customer){
-            return next(new APIError(messages.error_create, 422, true));
+            throw (new Error(messages.error_create, 422, true));
         }
 
         res.status(200).json({
@@ -30,7 +29,7 @@ async function create(req, res, next) {
         })
     }
     catch (exception) {
-        return next(new APIError(messages.error_create, 500, true, exception));
+        throw (new Error(messages.error_create, 500, true, exception));
     }
 }
 
@@ -39,7 +38,7 @@ async function list(req, res, next) {
         const list_customers = await customer_repository.list(req.query);
         
         if(!list_customers || list_customers.length < 1 ){
-            return next(new APIError(messages.not_found, 404, true));
+            throw (new Error(messages.not_found, 404, true));
         }
 
         res.status(200).json({
@@ -48,7 +47,7 @@ async function list(req, res, next) {
         });
     }
     catch (exception) {
-        return next(new APIError(messages.error_found, 500, true, exception));
+        throw (new Error(messages.error_found, 500, true, exception));
     }
 }
 
@@ -57,7 +56,7 @@ async function getById(req, res, next) {
         const customer = await customer_repository.getById(req.params.id);
 
         if(!customer){
-            return next(new APIError(messages.not_found, 404, true));
+            throw (new Error(messages.not_found, 404, true));
         }
 
         res.status(200).json({
@@ -66,7 +65,7 @@ async function getById(req, res, next) {
         });
     }
     catch (exception) {
-        return next(new APIError(messages.error_found, 500, true, exception));
+        throw (new Error(messages.error_found, 500, true, exception));
     }
 }
 
@@ -77,7 +76,7 @@ async function update(req, res, next) {
         const customer = await customer_repository.getById(req.params.id);
 
         if(!customer){
-            return next(new APIError(messages.not_found, 404, true));
+            throw (new Error(messages.not_found, 404, true));
         }
 
         const updated_customer = await customer_repository.update(customer, customer_request);
@@ -88,7 +87,7 @@ async function update(req, res, next) {
         });
     }
     catch (exception) {
-        return next(new APIError(messages.error_updated, 500, true, exception));
+        throw (new Error(messages.error_updated, 500, true, exception));
     }
 }
 
@@ -97,7 +96,7 @@ async function remove(req, res, next) {
         const customer = await customer_repository.getById(req.params.id);
 
         if(!customer){
-            return next(new APIError(messages.not_found, 404, true));
+            throw (new Error(messages.not_found, 404, true));
         }
 
         await customer_repository.remove(customer);
@@ -107,7 +106,7 @@ async function remove(req, res, next) {
         });
     }
     catch (exception) {
-        return next(new APIError(messages.error_remove, 500, true, exception));
+        throw (new Error(messages.error_remove, 500, true, exception));
     }
 }
 

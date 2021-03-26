@@ -16,6 +16,4 @@ const ProfileModule = db.define("profile_module", {
     freezeTableName: true
 });
 
-ProfileModule.sync({ alter: true });
-
 module.exports = ProfileModule;
