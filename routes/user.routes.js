@@ -24,6 +24,7 @@ router.route("/:id")
     .get(asynchandler(user_controller.getById))
     .put(
         validate(user_validator.update),
+        asynchandler(user_validator.existence),
         asynchandler(user_validator.recurrent),
         asynchandler(user_controller.update)
     )
