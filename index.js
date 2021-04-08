@@ -4,7 +4,8 @@ const session = require('express-session');
 const routes = require("./routes/index.routes");
 const { PORT, SESSION } = require("./config/server-config");
 const { isEmptyObject } = require("./helpers/ObjectTools");
-const index_mode = require("./src/models/index.model");
+const index_model = require("./src/models/index.model");
+const APIError = require("./helpers/APIError");
 
 app.use(express.json());
 
@@ -34,6 +35,22 @@ app.get("/status", (req, res) => {
 });
 
 app.use("/", routes);
+
+app.use(function (err, req, res, next) {
+    if(!err instanceof APIError){
+        return next(new APIError(err.message, 500, true, err));
+    }
+    next(err);
+});
+
+app.use(function (err, req, res, next) {
+    console.error(err.stack);
+    res.status(err.status).json({
+        code: err.status,
+        message: err.message,
+        stack: err.stack
+    });
+});
 
 app.listen(PORT, () => {
     console.log(`run port: ${PORT}`);

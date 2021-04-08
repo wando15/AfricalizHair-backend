@@ -33,10 +33,10 @@ async function getById(id) {
         let user = await User.findOne({ where: { id } });
 
 
-        if (user) {
-            user.modules = await profile_module_repository.list({ profile_id: user.profile_id });
+        if (user && user.profile_id) {
+            user.module = await profile_module_repository.list({ profile_id: user.profile_id });
             const modules = [];
-            for (let module of user.modules) {
+            for (let module of user.module) {
                 module = await module_repository.getById(module.module_id);
                 modules.push(module);
             }

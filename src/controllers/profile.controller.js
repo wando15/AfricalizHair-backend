@@ -1,5 +1,5 @@
 const profile_repository = require("../repositories/profile.repository");
-const profile_module_repository = require("../repositories/profile_module.repository");
+const APIError = require("../../helpers/APIError");
 
 const messages = {
     success_create: "Profile created successfully",
@@ -21,7 +21,7 @@ async function create(req, res, next) {
         const new_profile = await profile_repository.create(profile_request);
 
         if (!new_profile) {
-            throw (new Error(messages.error_create, 422, true));
+            throw (new APIError(messages.error_create, 422, true));
         }
 
         res.status(200).json({
@@ -30,7 +30,7 @@ async function create(req, res, next) {
         })
     }
     catch (exception) {
-        throw (new Error(messages.error_create, 500, true, exception));
+        return next(exception)
     }
 }
 
@@ -39,7 +39,7 @@ async function list(req, res, next) {
         const profile_list = await profile_repository.list(req.query);
 
         if (!profile_list || profile_list.length < 1) {
-            throw (new Error(messages.not_found, 404, true));
+            throw (new APIError(messages.not_found, 404, true));
         }
 
         res.status(200).json({
@@ -48,7 +48,7 @@ async function list(req, res, next) {
         });
     }
     catch (exception) {
-        throw (new Error(messages.error_found, 500, true, exception));
+        return next(exception)
     }
 }
 
@@ -57,7 +57,7 @@ async function getById(req, res, next) {
         let profile = await profile_repository.getById(req.params.id);
 
         if (!profile) {
-            throw (new Error(messages.not_found, 404, true));
+            throw (new APIError(messages.not_found, 404, true));
         }
 
         res.status(200).json({
@@ -67,7 +67,7 @@ async function getById(req, res, next) {
         });
     }
     catch (exception) {
-        throw (new Error(messages.error_found, 500, true, exception));
+        return next(exception)
     }
 }
 
@@ -78,7 +78,7 @@ async function update(req, res, next) {
         const profile = await profile_repository.getById(req.params.id);
 
         if (!profile) {
-            throw (new Error(messages.not_found, 404, true));
+            throw (new APIError(messages.not_found, 404, true));
         }
 
         const updated_profile = await profile_repository.update(profile, profile_request);
@@ -89,7 +89,7 @@ async function update(req, res, next) {
         });
     }
     catch (exception) {
-        throw (new Error(messages.error_updated, 500, true, exception));
+        return next(exception)
     }
 }
 
@@ -98,7 +98,7 @@ async function remove(req, res, next) {
         const profile = await profile_repository.getById(req.params.id);
 
         if (!profile) {
-            throw (new Error(messages.not_found, 404, true));
+            throw (new APIError(messages.not_found, 404, true));
         }
 
         await profile_repository.remove(profile);
@@ -108,7 +108,7 @@ async function remove(req, res, next) {
         });
     }
     catch (exception) {
-        throw (new Error(messages.error_remove, 500, true, exception));
+        return next(exception)
     }
 }
 

@@ -1,4 +1,5 @@
 const module_repository = require("../repositories/module.repository");
+const APIError = require("../../helpers/APIError");
 
 const messages = {
     success_create: "Modules created successfully",
@@ -20,7 +21,7 @@ async function create(req, res, next) {
         const new_module = await module_repository.create(module_request);
         
         if(!new_module){
-            throw (new Error(messages.error_create, 422, true));
+            throw (new APIError(messages.error_create, 422, true));
         }
 
         res.status(200).json({
@@ -29,7 +30,7 @@ async function create(req, res, next) {
         })
     }
     catch (exception) {
-        throw (new Error(messages.error_create, 500, true, exception));
+        return next(exception)
     }
 }
 
@@ -38,7 +39,7 @@ async function list(req, res, next) {
         const module_list = await module_repository.list(req.query);
         
         if(!module_list || module_list.length < 1 ){
-            throw (new Error(messages.not_found, 404, true));
+            throw (new APIError(messages.not_found, 404, true));
         }
 
         res.status(200).json({
@@ -47,7 +48,7 @@ async function list(req, res, next) {
         });
     }
     catch (exception) {
-        throw (new Error(messages.error_found, 500, true, exception));
+        return next(exception)
     }
 }
 
@@ -56,7 +57,7 @@ async function getById(req, res, next) {
         const module = await module_repository.getById(req.params.id);
 
         if(!module){
-            throw (new Error(messages.not_found, 404, true));
+            throw (new APIError(messages.not_found, 404, true));
         }
 
         res.status(200).json({
@@ -65,7 +66,7 @@ async function getById(req, res, next) {
         });
     }
     catch (exception) {
-        throw (new Error(messages.error_found, 500, true, exception));
+        return next(exception)
     }
 }
 
@@ -76,7 +77,7 @@ async function update(req, res, next) {
         const module = await module_repository.getById(req.params.id);
 
         if(!module){
-            throw (new Error(messages.not_found, 404, true));
+            throw (new APIError(messages.not_found, 404, true));
         }
 
         const updated_module = await module_repository.update(module, module_request);
@@ -87,7 +88,7 @@ async function update(req, res, next) {
         });
     }
     catch (exception) {
-        throw (new Error(messages.error_updated, 500, true, exception));
+        return next(exception)
     }
 }
 
@@ -96,7 +97,7 @@ async function remove(req, res, next) {
         const module = await module_repository.getById(req.params.id);
 
         if(!module){
-            throw (new Error(messages.not_found, 404, true));
+            throw (new APIError(messages.not_found, 404, true));
         }
 
         await module_repository.remove(module);
@@ -106,7 +107,7 @@ async function remove(req, res, next) {
         });
     }
     catch (exception) {
-        throw (new Error(messages.error_remove, 500, true, exception));
+        return next(exception)
     }
 }
 

@@ -1,5 +1,6 @@
 const Joi = require("joi");
 const category_repository = require("../repositories/category.repository");
+const APIError = require("../../helpers/APIError");
 
 const messages = {
     name: "fail with Name.",
@@ -26,13 +27,12 @@ async function recurrent(req, res, next) {
         const already = await category_repository.list({ name: request.name});
 
         if (already && already.id != request.id) {
-            throw (new Error("category already exist", 422, true));
+            throw (new APIError("category already exist", 422, true));
         }
-
         next();
     }
     catch (exception) {
-        throw (new Error("Failed to create category", 500, true, exception));
+        return next(exception)
     }
 }
 
@@ -42,13 +42,12 @@ async function existence(req, res, next) {
         const already = await category_repository.getById(request.category_id);
 
         if (!already) {
-            throw (new Error("category not found", 422, true));
+            throw (new APIError("category not found", 422, true));
         }
-
         next();
     }
     catch (exception) {
-        throw (new Error("Failed to verify category", 500, true, exception));
+        return next(exception)
     }
 }
 

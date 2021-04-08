@@ -1,5 +1,6 @@
 const Joi = require("joi");
 const customer_repository = require("../repositories/customer.repository");
+const APIError = require("../../helpers/APIError");
 
 const messages = {
     name: "fail with Name.",
@@ -30,13 +31,13 @@ async function recurrent(req, res, next) {
         const already = await customer_repository.list({ email: request.email});
 
         if (already && already.id != request.id) {
-            throw (new Error("customer already exist", 422, true));
+            throw (new APIError("customer already exist", 422, true));
         }
 
         next();
     }
     catch (exception) {
-        throw (new Error("Failed to create customer", 500, true, exception));
+        return next(exception)
     }
 }
 
@@ -46,13 +47,13 @@ async function existence(req, res, next) {
         const already = await customer_repository.getById(request.customer_id);
 
         if (!already) {
-            throw (new Error("customer not found", 422, true));
+            throw (new APIError("customer not found", 422, true));
         }
 
         next();
     }
     catch (exception) {
-        throw (new Error("Failed to verify customer", 500, true, exception));
+        return next(exception)
     }
 }
 

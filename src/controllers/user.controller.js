@@ -1,5 +1,6 @@
 const user_repository = require("../repositories/user.repository");
 const bcrypt = require("bcrypt");
+const APIError = require("../../helpers/APIError");
 const config = require("../../config/server-config");
 
 const messages = {
@@ -34,7 +35,7 @@ async function create(req, res, next) {
         const new_user = await user_repository.create(user_request);
 
         if (!new_user) {
-            throw (new Error(messages.error_create, 422, true));
+            throw (new APIError(messages.error_create, 422, true));
         }
 
         res.status(200).json({
@@ -43,7 +44,7 @@ async function create(req, res, next) {
         })
     }
     catch (exception) {
-        throw (new Error(messages.error_create, 500, true, exception));
+        return next(exception);
     }
 }
 
@@ -52,7 +53,7 @@ async function list(req, res, next) {
         const list_users = await user_repository.list(req.query);
 
         if (!list_users || list_users.length < 1) {
-            throw (new Error(messages.not_found, 404, true));
+            throw (new APIError(messages.not_found, 404, true));
         }
 
         res.status(200).json({
@@ -61,7 +62,7 @@ async function list(req, res, next) {
         });
     }
     catch (exception) {
-        throw (new Error(messages.error_found, 500, true, exception));
+        return next(exception)
     }
 }
 
@@ -70,7 +71,7 @@ async function getById(req, res, next) {
         const user = await user_repository.getById(req.params.id);
 
         if (!user) {
-            throw (new Error(messages.not_found, 404, true));
+            throw (new APIError(messages.not_found, 404, true));
         }
 
         res.status(200).json({
@@ -79,7 +80,7 @@ async function getById(req, res, next) {
         });
     }
     catch (exception) {
-        throw (new Error(messages.error_found, 500, true, exception));
+        return next(exception)
     }
 }
 
@@ -90,7 +91,7 @@ async function update(req, res, next) {
         const user = await user_repository.getById(req.params.id || req.session.user.user_id);
 
         if (!user) {
-            throw (new Error(messages.not_found, 404, true));
+            throw (new APIError(messages.not_found, 404, true));
         }
 
         if(user_request.pass){
@@ -105,7 +106,7 @@ async function update(req, res, next) {
         });
     }
     catch (exception) {
-        throw (new Error(messages.error_updated, 500, true, exception));
+        return next(exception)
     }
 }
 
@@ -115,7 +116,7 @@ async function remove(req, res, next) {
         const user = await user_repository.getById(req.params.id);
 
         if (!user) {
-            throw (new Error(messages.not_found, 404, true));
+            throw (new APIError(messages.not_found, 404, true));
         }
 
         await user_repository.remove(user);
@@ -125,7 +126,7 @@ async function remove(req, res, next) {
         });
     }
     catch (exception) {
-        throw (new Error(messages.error_remove, 500, true, exception));
+        return next(exception)
     }
 }
 

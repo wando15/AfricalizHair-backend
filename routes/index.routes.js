@@ -11,15 +11,15 @@ const category_routes = require("./category.routes");
 const template_routes = require("./template.routes");
 
 router.use("/", auth_routes.router_login);
-router.use((req, res, next) => {
-    if (req.session.user) {
-        next();
-    } else {
-        res.status(401).json({
-            message: "Authrization failed! Please login"
-        });
-    }
-});
+// router.use((req, res, next) => {
+//     if (req.session.user) {
+//         next();
+//     } else {
+//         res.status(401).json({
+//             message: "Authrization failed! Please login"
+//         });
+//     }
+// });
 
 router.use("/auth", auth_routes.router);
 router.use("/user", user_routes);

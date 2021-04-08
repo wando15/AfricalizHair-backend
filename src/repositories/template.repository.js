@@ -28,7 +28,7 @@ async function getById(id) {
     try {
         let template = await Template.findOne({ where: { id } });
 
-        if(template){
+        if (template) {
             template.content = base64url.decode(template.content);
         }
 
@@ -43,7 +43,7 @@ async function getByTemplateId(template_id) {
     try {
         let template = await Template.findOne({ where: { template_id } });
 
-        if(template){
+        if (template) {
             template.content = base64url.decode(template.content);
         }
 

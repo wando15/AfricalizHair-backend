@@ -18,4 +18,7 @@ category.hasMany(product, { foreignKey: 'category_id' });
 
 profile.hasMany(user, { foreignKey: 'profile_id' });
 
+profile_module.belongsTo(profile, { foreignKey: 'profile_id' });
+profile_module.belongsTo(module_model, { foreignKey: 'module_id' });
+
 db.sync({ alter: true });

@@ -1,11 +1,12 @@
 const nodemailer = require("nodemailer");
 const { MAILER } = require("../config/server-config");
 const Template = require('../src/controllers/template.controller');
+const APIError = require("./APIError");
 
 const transporter = nodemailer.createTransport(MAILER);
 
 
-async function sendForgot(mail_options, next) {
+async function send(mail_options, next) {
 
     const template = await Template.getTemplate(mail_options);
     
@@ -24,19 +25,19 @@ function sender(mailOptions, next) {
         transporter.sendMail(mailOptions, (error, response) => {
             if (error) {
                 console.log("error:\n", error, "\n");
-                throw (new Error("could not send reset code", 422, true));
+                throw (new APIError("could not send reset code", 422, true));
             } else {
                 console.log("email sent:\n", response);
-                throw (new Error("Reset Code sent", 422, true));
+                throw (new APIError("Reset Code sent", 422, true));
             }
         });
     } catch (exception) {
         console.log(error);
-        throw (new Error("could not sent reset code", 500, true, exception));
+        throw (new APIError("could not sent reset code", 500, true, exception));
     }
 }
 
 
 module.exports = {
-    sendForgot
+    send
 }
