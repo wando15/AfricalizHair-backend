@@ -1,10 +1,10 @@
-const Product = require("../models/product.model");
+const Service = require("../models/service.model");
 
-async function create(product_request) {
+async function create(service_request) {
     try {
-        const new_product = await Product.create(product_request);
+        const new_service = await Service.create(service_request);
 
-        return new_product || undefined;
+        return new_service || undefined;
     }
     catch (exception) {
         throw exception;
@@ -13,9 +13,9 @@ async function create(product_request) {
 
 async function list(query) {
     try {
-        const list_product = await Product.findAll({ where: query });
+        const list_service = await Service.findAll({ where: query });
 
-        return list_product.length > 0 ? list_product : undefined;
+        return list_service.length > 0 ? list_service : undefined;
     }
     catch (exception) {
         throw exception;
@@ -24,28 +24,28 @@ async function list(query) {
 
 async function getById(id) {
     try {
-        const product = await Product.findOne({ where: { id } });
+        const service = await Service.findOne({ where: { id } });
 
-        return product || undefined;
+        return service || undefined;
     }
     catch (exception) {
         throw exception;
     }
 }
 
-async function update(product, product_request) {
+async function update(service, service_request) {
     try {
-        await product.update(product_request);
-        return product;
+        await service.update(service_request);
+        return service;
     }
     catch (exception) {
         throw exception;
     }
 }
 
-async function remove(product) {
+async function remove(service) {
     try {
-        await product.destroy();
+        await service.destroy();
         return;
     }
     catch (exception) {

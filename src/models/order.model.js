@@ -6,18 +6,19 @@ const Order = db.define("order", {
         type: DataTypes.DECIMAL(17,2),
         allowNull: false
     },
-    quantity: {
+    amount_itens: {
         type: DataTypes.DECIMAL(5,3)
     },
     payment_type: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    email: {
-        type: DataTypes.STRING
+    status:{
+        type: DataTypes.STRING,
+        allowNull: false
     }
 }, {
     freezeTableName: true
 });
 
-module.exports = Customer;
+module.exports = Order;

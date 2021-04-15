@@ -9,6 +9,9 @@ const Service = db.define("service", {
     description: {
         type: DataTypes.STRING
     },
+    is_real_profit: {
+        type: DataTypes.BOOLEAN
+    },
     price: {
         type: DataTypes.DECIMAL(18,2),
         allowNull: false
