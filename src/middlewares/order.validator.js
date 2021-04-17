@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const order_item_repository = require("../repositories/order_item.repository");
+const order_repository = require("../repositories/order.repository");
 const APIError = require("../../helpers/APIError");
 
 const messages = {
@@ -11,7 +11,7 @@ const messages = {
 }
 
 const body = {
-    order_item: {
+    order: {
         payment_type: Joi.string().required().error(() => messages.payment_type),
         status: Joi.string().required().error(() => messages.status),
         customer_id: Joi.number().required().error(() => messages.customer_id),
@@ -29,10 +29,10 @@ const update = {
 async function recurrent(req, res, next) {
     try {
         const request = req.body;
-        const already = await order_item_repository.list({ customer_id: request.customer_id, status: request.status});
+        const already = await order_repository.list({ customer_id: request.customer_id, status: request.status});
 
-        if (already && already.id != request.id) {
-            throw (new APIError("order_item already exist", 422, true));
+        if (already && already[0].id != req.params.id) {
+            throw (new APIError("order already exist", 422, true));
         }
 
         next();
@@ -45,10 +45,10 @@ async function recurrent(req, res, next) {
 async function existence(req, res, next) {
     try {
         const request = req.body;
-        const already = await order_item_repository.getById(request.order_item_id);
+        const already = await order_repository.getById(request.order_id);
 
         if (!already) {
-            throw (new APIError("order_item not found", 422, true));
+            throw (new APIError("order not found", 422, true));
         }
 
         next();

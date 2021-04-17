@@ -1,18 +1,24 @@
 const Joi = require("joi");
-const service_repository = require("../repositories/service.repository");
+const product_repository = require("../repositories/product.repository");
 const APIError = require("../../helpers/APIError");
 
 const messages = {
     name: "fail with Name.",
-    desription: "fail with desription.",,
-    price: "fail with price."
+    desription: "fail with desription.",
+    is_real_profit: "fail with precification type.",
+    price: "fail with price.",
+    brand_id: "fail with brand.",
+    category_id: "fail with category."
 }
 
 const body = {
-    service: {
+    product: {
         name: Joi.string().required().error(() => messages.name),
         desription: Joi.string().required().error(() => messages.desription),
-        price: Joi.number().required().error(() => messages.price)
+        is_real_profit: Joi.boolean().required().error(() => messages.is_real_profit),
+        price: Joi.number().required().error(() => messages.price),
+        brand_id: Joi.number().required().error(() => messages.brand_id),
+        category_id: Joi.number().required().error(() => messages.category_id),
     }
 }
 const create = {
@@ -26,10 +32,10 @@ const update = {
 async function recurrent(req, res, next) {
     try {
         const request = req.body;
-        const already = await service_repository.list({ name: request.name});
+        const already = await product_repository.list({ name: request.name});
 
-        if (already && already.id != request.id) {
-            throw (new APIError("service already exist", 422, true));
+        if (already && already[0].id != req.params.id) {
+            throw (new APIError("product already exist", 422, true));
         }
 
         next();
@@ -42,10 +48,10 @@ async function recurrent(req, res, next) {
 async function existence(req, res, next) {
     try {
         const request = req.body;
-        const already = await service_repository.getById(request.service_id);
+        const already = await product_repository.getById(request.product_id);
 
         if (!already) {
-            throw (new APIError("service not found", 422, true));
+            throw (new APIError("product not found", 422, true));
         }
 
         next();

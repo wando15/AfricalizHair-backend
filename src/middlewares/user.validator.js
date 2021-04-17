@@ -27,7 +27,7 @@ const update = {
 
 async function recurrent(req, res, next) {
     try {
-        req.body.name = req.body.name.substring(0,1).toUpperCase().concat(req.body.name.substring(1));
+        req.body.name = req.body.name.substring(0, 1).toUpperCase().concat(req.body.name.substring(1));
         const request = req.body;
         const already = await user_repository.list({ name: request.name, email: request.email });
 

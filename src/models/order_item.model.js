@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const db = require("../../database/db-connect");
 
-const ProfileModule = db.define("profile_module", {
+const OrderItem = db.define("order_item", {
     value: {
         type: DataTypes.DECIMAL(12, 2),
         allownull: false
@@ -18,4 +18,4 @@ const ProfileModule = db.define("profile_module", {
     freezeTableName: true
 });
 
-module.exports = ProfileModule;
+module.exports = OrderItem;

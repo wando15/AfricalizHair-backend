@@ -30,7 +30,7 @@ async function recurrent(req, res, next) {
         const request = req.body;
         const already = await customer_repository.list({ email: request.email});
 
-        if (already && already.id != request.id) {
+        if (already && already[0].id != req.params.id) {
             throw (new APIError("customer already exist", 422, true));
         }
 

@@ -23,11 +23,10 @@ const update = {
 
 async function recurrent(req, res, next) {
     try {
-        let request = req.body;
+        const request = req.body;
+        const already = await module_repository.list({ name: request.name });
 
-        let already = await module_repository.list({ name: request.name });
-
-        if (already && already.id != request.id) {
+        if (already && already[0].id != req.params.id) {
             throw (new APIError("module already exist", 422, true));
         }
 
