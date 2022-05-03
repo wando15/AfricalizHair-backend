@@ -19,7 +19,7 @@ router.route("/logout")
         asynchandler(auth_controller.logout)
     );
 
-router_login.route("/resset")
+router_login.route("/reset")
     .post(
         asynchandler(auth_controller.reset)
     );

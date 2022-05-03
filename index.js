@@ -14,9 +14,9 @@ const AppContainer = require("./src/Factories/UserFactory");
 
 app.use(express.json());
 
-app.use(
+/* app.use(
     session(SESSION)
-);
+); */
 
 app.use((req, res, next) => {
     console.log('=====================METHOD======================');
