@@ -4,8 +4,9 @@
   "description": "Controle financeiro AfricalizHair",
   "main": "index.js",
   "scripts": {
-    "test": "test start",
-    "start": "nodemon --inspect index.js",
+    "test": "jest --detectOpenHandles",
+    "test:watch": "jest --watch --detectOpenHandles",
+    "start": "nodemon --inspect server.js",
     "swagger-autogen": "node swagger.js"
   },
   "author": "Wanderson Cesario Nascimento Souza",
@@ -32,6 +33,8 @@
     "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
-    "nodemon": "^1.3.3"
+    "jest": "^28.0.3",
+    "nodemon": "^2.0.6",
+    "supertest": "^6.2.3"
   }
 }
