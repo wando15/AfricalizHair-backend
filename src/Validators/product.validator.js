@@ -32,7 +32,7 @@ const update = {
 async function recurrent(req, res, next) {
     try {
         const request = req.body;
-        const already = await product_repository.list({ name: request.name});
+        const already = await product_repository.list({ name: request.name });
 
         if (already && already[0].id != req.params.id) {
             throw (new APIError("product already exist", 422, true));

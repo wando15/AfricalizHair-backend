@@ -24,7 +24,7 @@ const update = {
 async function recurrent(req, res, next) {
     try {
         const request = req.body;
-        const already = await category_repository.list({ name: request.name});
+        const already = await category_repository.list({ name: request.name });
 
         if (already && already[0].id != req.params.id) {
             throw (new APIError("category already exist", 422, true));
