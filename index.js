@@ -1,11 +1,16 @@
 const express = require("express");
 const app = express();
+// const http = require('http');
 const session = require('express-session');
 const routes = require("./routes/index.routes");
 const { PORT, SESSION } = require("./config/server-config");
 const { isEmptyObject } = require("./helpers/ObjectTools");
 const index_model = require("./src/models/index.model");
 const APIError = require("./helpers/APIError");
+// const swaggerUi = require('swagger-ui-express');
+// const swaggerFile = require('./swagger_output.json');
+
+// app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 app.use(express.json());
 
@@ -55,3 +60,6 @@ app.use(function (err, req, res, next) {
 app.listen(PORT, () => {
     console.log(`run port: ${PORT}`);
 });
+
+// http.createServer(app).listen(PORT+1)
+// console.log("Listening at:// port:%s (HTTP)", PORT+1)

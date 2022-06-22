@@ -3,7 +3,7 @@ const shortid = require("shortid");
 const bcrypt = require("bcrypt");
 const user_repository = require("../repositories/user.repository");
 const auth_repository = require("../repositories/auth.repository");
-const config = require("../../config/server-config");
+const config = require("../../config/server-config.js");
 const mailer = require("../../helpers/mailer");
 const APIError = require("../../helpers/APIError");
 

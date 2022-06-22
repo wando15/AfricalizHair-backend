@@ -22,4 +22,11 @@ router.route("/:id")
     )
     .delete(asynchandler(order_controller.remove));
 
+router.route("/:id/updateStap")
+    .put(
+        validate(order_validator.update),
+        asynchandler(order_validator.recurrent),
+        asynchandler(order_controller.updateStep)
+    )
+
 module.exports = router;

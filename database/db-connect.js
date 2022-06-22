@@ -11,5 +11,4 @@ connection.authenticate()
     console.log(`Unable to connect to the database ${config.database}:`, exception.parent);
   });
 
-
 module.exports = connection;

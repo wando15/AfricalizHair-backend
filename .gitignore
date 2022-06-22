@@ -1,7 +1,6 @@
 node_modules
 .vscode
 db-config.js
-server-config.js
 # Logs
 logs
 *.log

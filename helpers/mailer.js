@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const { MAILER } = require("../config/server-config");
+const { MAILER } = require("../config/mailer-config");
 const Template = require('../src/controllers/template.controller');
 const APIError = require("./APIError");
 
