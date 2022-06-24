@@ -5,8 +5,8 @@ const session = require('express-session');
 const routes = require("./routes/index.routes");
 const { PORT, SESSION } = require("./config/server-config");
 const { isEmptyObject } = require("./helpers/ObjectTools");
-const index_model = require("./src/models/index.model");
 const APIError = require("./helpers/APIError");
+const AppContainer = require("./src/Factories/UserFactory");
 // const swaggerUi = require('swagger-ui-express');
 // const swaggerFile = require('./swagger_output.json');
 
@@ -39,6 +39,39 @@ app.get("/status", (req, res) => {
     res.send("Servidor Online! :)");
 });
 
+
+/* const UserFactory = (req) => {
+    const UserRepository = require('./src/repostiories/user.repository')
+    const UserController = require('./src/controllers/user.controller')
+    const DBConnection = require('./src/config/db/inMemoryConnection')
+
+    const controller = new UserController({
+        userRepository: new UserRepository(DBConnection)
+    })
+
+    const preparedPayload = { ...req.body, ...req.queryParams, ...req.headers}
+    const result = controller.execute(preparedPayload)
+
+    return result
+} */
+
+
+/* app.get('/get-user', (req, res, next) => {
+    const result = UserFactory(req)
+
+    res.result = result
+    next()
+},
+    (req, res) => {
+        if (res.result.error) {
+
+        }
+    },
+    (req, res) => {
+        res.status(200).send(res.result.data)
+    }
+) */
+
 app.use("/", routes);
 
 app.use(function (err, req, res, next) {
@@ -63,3 +96,39 @@ app.listen(PORT, () => {
 
 // http.createServer(app).listen(PORT+1)
 // console.log("Listening at:// port:%s (HTTP)", PORT+1)
+
+
+
+/* 
+Web -> request -> API
+
+API
+
+Rotas -> Factory -> Handler/Resolver = Controllers
+
+Controller
+ - dados da request
+ - dependências que vão ajudar a processar a requisição
+   - repositórios
+   - services
+     - mailer
+   - models
+   - formatters
+
+- precisa receber as depedências que irá usar
+  - construtor se for classe
+  - argumentos se for função
+
+
+interface BaseController {
+    repository: BaseReposity
+
+    contructor(dependencias, reqBody)
+
+    execute(reqBody): { status: Number, data: Object, error: Error}
+}
+
+Factory
+  - classe/função fábrica - retorna uma função ou classe especializada
+    - prepara e fornece tudo que a classe/função precisa para funcionar adequadamente
+ */

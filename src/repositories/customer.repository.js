@@ -1,63 +1,59 @@
-const Customer = require("../models/customer.model");
+function CustomerRepository(Customer) {
+    async function create(customer_request) {
+        try {
+            const new_customer = await Customer.create(customer_request);
 
-async function create(customer_request) {
-    try {
-        const new_customer = await Customer.create(customer_request);
+            return new_customer || undefined;
+        }
+        catch (exception) {
+            throw exception;
+        }
+    }
 
-        return new_customer || undefined;
-    }
-    catch (exception) {
-        throw exception;
-    }
-}
+    async function list(query) {
+        try {
+            const list_customer = await Customer.findAll({ where: query });
 
-async function list(query) {
-    try {
-        const list_customer = await Customer.findAll({ where: query });
+            return list_customer.length > 0 ? list_customer : undefined;
+        }
+        catch (exception) {
+            throw exception;
+        }
+    }
 
-        return list_customer.length > 0 ? list_customer : undefined;
-    }
-    catch (exception) {
-        throw exception;
-    }
-}
+    async function getById(id) {
+        try {
+            const customer = await Customer.findOne({ where: { id } });
 
-async function getById(id) {
-    try {
-        const customer = await Customer.findOne({ where: { id } });
+            return customer || undefined;
+        }
+        catch (exception) {
+            throw exception;
+        }
+    }
 
-        return customer || undefined;
+    async function update(customer, customer_request) {
+        try {
+            await customer.update(customer_request);
+            return customer;
+        }
+        catch (exception) {
+            throw exception;
+        }
     }
-    catch (exception) {
-        throw exception;
-    }
-}
 
-async function update(customer, customer_request) {
-    try {
-        await customer.update(customer_request);
-        return customer;
-    }
-    catch (exception) {
-        throw exception;
-    }
-}
-
-async function remove(customer) {
-    try {
-        await customer.destroy();
-        return;
-    }
-    catch (exception) {
-        throw exception;
+    async function remove(customer) {
+        try {
+            await customer.destroy();
+            return;
+        }
+        catch (exception) {
+            throw exception;
+        }
     }
 }
 
 module.exports = {
-    create,
-    list,
-    getById,
-    remove,
-    update
+    CustomerRepository
 }
 

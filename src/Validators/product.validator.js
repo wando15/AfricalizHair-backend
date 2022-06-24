@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const product_repository = require("../repositories/product.repository");
+const product_repository = require("../repositories/service.repository");
 const APIError = require("../../helpers/APIError");
 
 const messages = {

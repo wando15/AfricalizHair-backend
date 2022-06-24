@@ -8,15 +8,15 @@ const messages = {
     email: "fail with email."
 }
 
-
 const body = {
     user: {
         name: Joi.string().required().error(() => messages.name),
         last_name: Joi.string().required().error(() => messages.last_name),
         email: Joi.string().email().required().error(() => messages.email),
-        profile_id: Joi.number().required()
+        // profile_id: Joi.number().required()
     }
 }
+
 const create = {
     body
 };

@@ -1,63 +1,59 @@
-const Service = require("../models/service.model");
+function ProductRepository(Product) {
+    async function create(product_request) {
+        try {
+            const new_product = await Product.create(product_request);
 
-async function create(service_request) {
-    try {
-        const new_service = await Service.create(service_request);
+            return new_product || undefined;
+        }
+        catch (exception) {
+            throw exception;
+        }
+    }
 
-        return new_service || undefined;
-    }
-    catch (exception) {
-        throw exception;
-    }
-}
+    async function list(query) {
+        try {
+            const list_product = await Product.findAll({ where: query });
 
-async function list(query) {
-    try {
-        const list_service = await Service.findAll({ where: query });
+            return list_product.length > 0 ? list_product : undefined;
+        }
+        catch (exception) {
+            throw exception;
+        }
+    }
 
-        return list_service.length > 0 ? list_service : undefined;
-    }
-    catch (exception) {
-        throw exception;
-    }
-}
+    async function getById(id) {
+        try {
+            const product = await Product.findOne({ where: { id } });
 
-async function getById(id) {
-    try {
-        const service = await Service.findOne({ where: { id } });
+            return product || undefined;
+        }
+        catch (exception) {
+            throw exception;
+        }
+    }
 
-        return service || undefined;
+    async function update(product, product_request) {
+        try {
+            await product.update(product_request);
+            return product;
+        }
+        catch (exception) {
+            throw exception;
+        }
     }
-    catch (exception) {
-        throw exception;
-    }
-}
 
-async function update(service, service_request) {
-    try {
-        await service.update(service_request);
-        return service;
-    }
-    catch (exception) {
-        throw exception;
-    }
-}
-
-async function remove(service) {
-    try {
-        await service.destroy();
-        return;
-    }
-    catch (exception) {
-        throw exception;
+    async function remove(product) {
+        try {
+            await product.destroy();
+            return;
+        }
+        catch (exception) {
+            throw exception;
+        }
     }
 }
 
 module.exports = {
-    create,
-    list,
-    getById,
-    remove,
-    update
+    ProductRepository
 }
 

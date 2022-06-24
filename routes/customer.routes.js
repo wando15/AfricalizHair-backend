@@ -3,7 +3,7 @@ const router = express.Router();
 const asynchandler = require("express-async-handler");
 const validate = require("express-validation");
 const customer_controller = require("../src/controllers/customer.controller");
-const customer_validator = require("../src/middlewares/customer.validator");
+const customer_validator = require("../src/Validators/customer.validator");
 
 router.route("/")
     .post(

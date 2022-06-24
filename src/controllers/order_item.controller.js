@@ -1,6 +1,3 @@
-const order_item_repository = require("../repositories/order_item.repository");
-const APIError = require("../../helpers/APIError");
-
 const messages = {
     success_create: "Order item created successfully",
     error_create: "Failed to create order item",
@@ -14,90 +11,86 @@ const messages = {
     error_updated: "Failed to update order item",
 }
 
-async function create(req, res, next) {
-    try {
-        const order_item_request = req.body;
+function OrderItemController(OrderItemRepository, APIError) {
+    async function create(req, res, next) {
+        try {
+            const order_item_request = req.body;
 
-        const new_order_item = await order_item_repository.create(order_item_request);
+            const new_order_item = await OrderItemRepository.create(order_item_request);
 
-        if (!new_order_item) {
-            throw (new APIError(messages.error_create, 422, true));
+            if (!new_order_item) {
+                throw (new APIError(messages.error_create, 422, true));
+            }
+
+            res.status(200).json({
+                message: messages.success_create,
+                order_item: new_order_item
+            })
         }
-
-        res.status(200).json({
-            message: messages.success_create,
-            order_item: new_order_item
-        })
-    }
-    catch (exception) {
-        return next(exception)
-    }
-}
-
-async function list(req, res, next) {
-    try {
-        var query = { order_id: req.params.id };
-        const order_item_list = await order_item_repository.list(query);
-
-        if (!order_item_list || order_item_list.length < 1) {
-            throw (new APIError(messages.not_found, 404, true));
+        catch (exception) {
+            return next(exception)
         }
-
-        res.status(200).json({
-            message: messages.ok_found_list,
-            order_item_list
-        });
     }
-    catch (exception) {
-        return next(exception)
-    }
-}
 
-async function update(req, res, next) {
-    try {
-        const order_item_request = req.body;
+    async function list(req, res, next) {
+        try {
+            var query = { order_id: req.params.id };
+            const order_item_list = await OrderItemRepository.list(query);
 
-        const order_item = await order_item_repository.getById(req.params.id);
+            if (!order_item_list || order_item_list.length < 1) {
+                throw (new APIError(messages.not_found, 404, true));
+            }
 
-        if (!order_item) {
-            throw (new APIError(messages.not_found, 404, true));
+            res.status(200).json({
+                message: messages.ok_found_list,
+                order_item_list
+            });
         }
-
-        const updated_order_item = await order_item_repository.update(order_item, order_item_request);
-
-        res.status(200).json({
-            message: messages.success_updated,
-            user: updated_order_item
-        });
-    }
-    catch (exception) {
-        return next(exception)
-    }
-}
-
-async function remove(req, res, next) {
-    try {
-        const order_item = await order_item_repository.getById(req.params.id);
-
-        if (!order_item) {
-            throw (new APIError(messages.not_found, 404, true));
+        catch (exception) {
+            return next(exception)
         }
-
-        await order_item_repository.remove(order_item);
-
-        res.status(200).json({
-            message: messages.success_remove,
-        });
     }
-    catch (exception) {
-        return next(exception)
+
+    async function update(req, res, next) {
+        try {
+            const order_item_request = req.body;
+
+            const order_item = await OrderItemRepository.getById(req.params.id);
+
+            if (!order_item) {
+                throw (new APIError(messages.not_found, 404, true));
+            }
+
+            const updated_order_item = await OrderItemRepository.update(order_item, order_item_request);
+
+            res.status(200).json({
+                message: messages.success_updated,
+                user: updated_order_item
+            });
+        }
+        catch (exception) {
+            return next(exception)
+        }
+    }
+
+    async function remove(req, res, next) {
+        try {
+            const order_item = await OrderItemRepository.getById(req.params.id);
+
+            if (!order_item) {
+                throw (new APIError(messages.not_found, 404, true));
+            }
+
+            await OrderItemRepository.remove(order_item);
+
+            res.status(200).json({
+                message: messages.success_remove,
+            });
+        }
+        catch (exception) {
+            return next(exception)
+        }
     }
 }
 
-module.exports = {
-    create,
-    list,
-    getById,
-    remove,
-    update
-}
+module.exports = OrderItemController

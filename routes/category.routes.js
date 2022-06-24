@@ -3,7 +3,7 @@ const router = express.Router();
 const asynchandler = require("express-async-handler");
 const validate = require("express-validation");
 const category_controller = require("../src/controllers/category.controller");
-const category_validator = require("../src/middlewares/category.validator");
+const category_validator = require("../src/Validators/category.validator");
 
 router.route("/")
     .post(

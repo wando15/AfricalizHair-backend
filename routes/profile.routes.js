@@ -3,7 +3,7 @@ const router = express.Router();
 const asynchandler = require("express-async-handler");
 const validate = require("express-validation");
 const profile_controller = require("../src/controllers/profile.controller");
-const profile_validator = require("../src/middlewares/profile.validator");
+const profile_validator = require("../src/Validators/profile.validator");
 const profile_module_routes = require("./profile_module.routes");
 
 router.use("/module", profile_module_routes);

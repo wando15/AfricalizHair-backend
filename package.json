@@ -11,6 +11,7 @@
   "author": "Wanderson Cesario Nascimento Souza",
   "license": "ISC",
   "dependencies": {
+    "awilix": "^7.0.3",
     "base64-url": "^2.3.3",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
