@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --detectOpenHandles",
     "test:watch": "jest --watch --detectOpenHandles",
-    "start": "nodemon --inspect server.js",
+    "start": "nodemon --inspect index.js",
     "swagger-autogen": "node swagger.js"
   },
   "author": "Wanderson Cesario Nascimento Souza",

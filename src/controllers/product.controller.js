@@ -14,98 +14,19 @@ const messages = {
     error_updated: "Failed to update product",
 }
 
-function ProductController(ProductRepository, APIError) {
-    async function create(req, res, next) {
-        const product_request = req.body;
+async function create(req, res, next) {
+    const product_request = req.body;
 
-        const new_product = await product_repository.create(product_request);
+    const new_product = await product_repository.create(product_request);
 
-        if (!new_product) {
-            throw (new APIError(messages.error_create, 422, true));
-        }
-
-        res.status(200).json({
-            message: messages.success_create,
-            product: new_product
-        })
+    if (!new_product) {
+        throw (new APIError(messages.error_create, 422, true));
     }
 
-    async function list(req, res, next) {
-        try {
-            const list_products = await product_repository.list(req.query);
-
-            if (!list_products || list_products.length < 1) {
-                throw (new APIError(messages.not_found, 404, true));
-            }
-
-            res.status(200).json({
-                message: messages.ok_found_list,
-                list_products
-            });
-        }
-        catch (exception) {
-            return next(exception)
-        }
-    }
-
-    async function getById(req, res, next) {
-        try {
-            const product = await product_repository.getById(req.params.id);
-
-            if (!product) {
-                throw (new APIError(messages.not_found, 404, true));
-            }
-
-            res.status(200).json({
-                message: messages.ok_found,
-                product
-            });
-        }
-        catch (exception) {
-            return next(exception)
-        }
-    }
-
-    async function update(req, res, next) {
-        try {
-            const product_request = req.body;
-
-            const product = await product_repository.getById(req.params.id);
-
-            if (!product) {
-                throw (new APIError(messages.not_found, 404, true));
-            }
-
-            const updated_product = await product_repository.update(product, product_request);
-
-            res.status(200).json({
-                message: messages.success_updated,
-                user: updated_product
-            });
-        }
-        catch (exception) {
-            return next(exception)
-        }
-    }
-
-    async function remove(req, res, next) {
-        try {
-            const product = await product_repository.getById(req.params.id);
-
-            if (!product) {
-                throw (new APIError(messages.not_found, 404, true));
-            }
-
-            await product_repository.remove(product);
-
-            res.status(200).json({
-                message: messages.success_remove,
-            });
-        }
-        catch (exception) {
-            return next(exception)
-        }
-    }
+    res.status(200).json({
+        message: messages.success_create,
+        product: new_product
+    })
 }
 
 async function list(req, res, next) {

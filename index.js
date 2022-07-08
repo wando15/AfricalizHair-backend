@@ -3,10 +3,11 @@ const app = express();
 // const http = require('http');
 const session = require('express-session');
 const routes = require("./routes/index.routes");
-const { SESSION } = require("./config/server-config");
+const { PORT, SESSION } = require("./config/server-config");
 const { isEmptyObject } = require("./helpers/ObjectTools");
 const APIError = require("./helpers/APIError");
 const AppContainer = require("./src/Factories/UserFactory");
+
 // const swaggerUi = require('swagger-ui-express');
 // const swaggerFile = require('./swagger_output.json');
 

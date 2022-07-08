@@ -23,16 +23,16 @@ function UserController({ userRepository, bcrypt, config, APIError }) {
     }
 
     const create = async (req, res, next) => {
-        console.warn({ userRepository })
         try {
             const user_request = req.body;
             user_request.email = user_request.email.toLowerCase();
             user_request.pass = bcrypt.hashSync(user_request.pass, config.bcrypt.NUMBER_CRIPTY);
 
-            return await this.userRepository.create(user_request);
+            return await userRepository.create(user_request);
         }
         catch (exception) {
-            throw (new APIError(messages.error_create, 422, true));
+            console.error({ exception })
+            throw { message: messages.error_create, status: 422, exception };
         }
     }
 
@@ -118,7 +118,14 @@ function UserController({ userRepository, bcrypt, config, APIError }) {
         }
     }
 
-    return create
+    return {
+        load,
+        create,
+        list,
+        getById,
+        update,
+        remove
+    }
 }
 
 module.exports = UserController
