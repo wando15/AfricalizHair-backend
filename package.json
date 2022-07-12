@@ -4,7 +4,8 @@
   "description": "Controle financeiro AfricalizHair",
   "main": "index.js",
   "scripts": {
-    "test": "test start",
+    "test": "jest --detectOpenHandles",
+    "test:watch": "jest --watch --detectOpenHandles",
     "start": "nodemon --inspect index.js",
     "swagger-autogen": "node swagger.js"
   },
