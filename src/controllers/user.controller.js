@@ -1,3 +1,6 @@
+
+const APIError = require("../../helpers/APIError");
+
 const messages = {
     success_create: "User created successfully",
     error_create: "Failed to create user",
@@ -11,7 +14,7 @@ const messages = {
     error_updated: "Failed to update user",
 }
 
-function UserController({ userRepository, bcrypt, config, APIError }) {
+function UserController({ userRepository, bcrypt, config}) {
     async function load(req, res, next) {
         const user = await userRepository.getById(req.session.user.user_id);
 
