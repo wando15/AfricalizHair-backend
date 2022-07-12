@@ -9,11 +9,10 @@ const Model = require("../models");
 
 async function CreateUserFactory(req, res, next) {
     const userRepository = UserRepository(Model.User);    
-    const userController = UserController({ userRepository, bcrypt, config});
-    
-    console.warn({ userController })
+    const userController = UserController({ userRepository, bcrypt, config, ApiError });
 
-    const result = await userController.create(req, res, next);
+    const result = await userController
+        .create(req, res, next);
 
     res.result = result;
     next();
