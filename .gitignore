@@ -1,7 +1,8 @@
 node_modules
 .vscode
-db-config.js
-mailer-config.js
+db.config.js
+mailer.config.js
+server.config.js
 # Logs
 logs
 *.log
