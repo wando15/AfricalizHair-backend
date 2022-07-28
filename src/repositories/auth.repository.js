@@ -1,21 +1,9 @@
 function AuthRepository(Auth) {
-
     async function create(auth_request) {
         try {
             const new_auth = await Auth.create(auth_request);
 
             return new_auth || undefined;
-        }
-        catch (exception) {
-            throw exception;
-        }
-    }
-
-    async function list(query) {
-        try {
-            const list_auth = await Auth.findAll({ where: query });
-
-            return list_auth.length > 0 ? list_auth : undefined;
         }
         catch (exception) {
             throw exception;
@@ -32,19 +20,12 @@ function AuthRepository(Auth) {
         }
     }
 
-    async function getById(id) {
-        try {
-            const auth = await Auth.findOne({ where: { id } });
-
-            return auth || undefined;
-        }
-        catch (exception) {
-            throw exception;
-        }
+    return {
+        create,
+        update
     }
 }
 
-module.exports = {
-    AuthRepository
-}
+module.exports = AuthRepository;
+
 

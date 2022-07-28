@@ -13,6 +13,7 @@ const body = {
         name: Joi.string().required().error(() => messages.name),
         last_name: Joi.string().required().error(() => messages.last_name),
         email: Joi.string().email().required().error(() => messages.email),
+        pass: Joi.string().email().required().error(() => messages.email)
         // profile_id: Joi.number().required()
     }
 }

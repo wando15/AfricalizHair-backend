@@ -1,5 +1,5 @@
 function UserRepository(User, ModuleRepository, ProfileModuleRepository) {
-    const create = async (user_request) => {
+    async function create(user_request) {
         try {
             return await User.findOrCreate({
                 where: { email: user_request.email },
@@ -88,9 +88,14 @@ function UserRepository(User, ModuleRepository, ProfileModuleRepository) {
 
     return {
         create,
-        list
+        list,
+        getByEmail,
+        getByRessetKey,
+        getById,
+        update,
+        remove
     }
 }
 
-module.exports = UserRepository
+module.exports = UserRepository;
 

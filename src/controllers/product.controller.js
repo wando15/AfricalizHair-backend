@@ -1,6 +1,3 @@
-const product_repository = require("../repositories/service.repository");
-const APIError = require("../../helpers/APIError");
-
 const messages = {
     success_create: "Product created successfully",
     error_create: "Failed to create product",
@@ -13,20 +10,21 @@ const messages = {
     success_updated: "Product updated successfully",
     error_updated: "Failed to update product",
 }
+function ProductController (ProductRepository, APIError) {
+    async function create(req, res, next) {
+        const product_request = req.body;
 
-async function create(req, res, next) {
-    const product_request = req.body;
+        const new_product = await ProductRepository.create(product_request);
 
-    const new_product = await product_repository.create(product_request);
+        if (!new_product) {
+            throw (new APIError(messages.error_create, 422, true));
+        }
 
-    if (!new_product) {
-        throw (new APIError(messages.error_create, 422, true));
+        res.status(200).json({
+            message: messages.success_create,
+            product: new_product
+        })
     }
-
-    res.status(200).json({
-        message: messages.success_create,
-        product: new_product
-    })
 }
 
-module.exports = { create }
+module.exports = ProductController;
